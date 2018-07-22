@@ -15,9 +15,16 @@ export class AppComponent {
 
   testApi() {
     this.http.get("http://localhost:4201/").subscribe(response => {
-      console.log("data", response);
+      if (Array.isArray(response)) {
+        console.log("is array");
+        response.forEach((result) => {
+          console.log(result)
+        })
+      } else {
+        console.log("not array", response)
+      }
     }, error => {
-      console.log("error", error);
+      console.log("error", error)
     })
   }
 }
