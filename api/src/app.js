@@ -58,3 +58,8 @@ app.get('/', function (req, res) {
         throw err
     })
 });
+
+app.post('/quest/join', (req, res) => {
+    console.log('join', req.body);
+    res.status(200).send();
+});

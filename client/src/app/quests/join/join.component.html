@@ -1,23 +1,15 @@
-<p>
-  join works!
-</p>
-<ul class="quests">
-  <li *ngFor="let quest of quests">
-    <div>{{quest._id}}</div>
-    <div>{{quest.name}}</div>
-    <div>{{quest.organizer_email}}</div>
-    <div>{{quest.base_url}}</div>
-    <div *ngFor="let activity of quest.activities">
-      <div>{{activity.activity_type}}</div>
-      <div>{{activity.start_datetime}}</div>
-      <div>{{activity.completion_type}}</div>
-      <div>{{activity.message}}</div>
-      <div>{{activity.answer}}</div>
-      <div>{{activity.activity_url}}</div>
-      <div>{{activity.answer_url}}</div>
-      <div>{{activity.email.subject}}</div>
-      <div>{{activity.email.message}}</div>
-      <div>{{activity.email.file_path}}</div>
-    </div>
-  </li>
-</ul>
+<div>
+  <h1>Join the Quest</h1>
+  <div>
+    <label>Name:
+      <input [(ngModel)]="name" type="text" placeholder="name">
+    </label>
+  </div>
+  <div>
+    <label>Email:
+      <input [(ngModel)]="email" type="text" placeholder="email">
+    </label>
+  </div>
+  <button id="join" (click)="onJoinClick()">Join</button>
+  <div *ngIf="inputIsValid == false" class="error">You must provide your name and a valid CollabNet email to join</div>
+</div>

@@ -5,7 +5,9 @@ import { QuestService } from './quest.service';
 describe('QuestService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [QuestService]
+      providers: [
+        QuestService,
+      ]
     });
   });
 
