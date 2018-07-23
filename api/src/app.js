@@ -1,5 +1,5 @@
 const express = require('express');
-//const bodyParser = require("body-parser");
+const bodyParser = require("body-parser");
 const app = express();
 const MongoClient = require('mongodb').MongoClient;
 const MongodbUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/office_quest';
@@ -25,7 +25,8 @@ const errorHandler = (err, req, res, next) => {
     res.status(500);
     res.render('error', { error: err })
 };
-//app.use(bodyParser.json());
+
+app.use(bodyParser.json());
 app.use(setHeaders);
 app.use(logError);
 app.use(clientErrorHandler);
