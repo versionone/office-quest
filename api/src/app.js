@@ -10,20 +10,23 @@ let setHeaders = function(req, res, next) {
     res.header('Content-Type', 'application/json');
     next();
 };
+
 const logError = (err, req, res, next) => {
     console.error("err.stack", err.stack);
-    next(err)
+    next(err);
 };
+
 const clientErrorHandler = (err, req, res, next) => {
     if (req.xhr) {
-        res.status(500).json({ error: err })
+        res.status(500).json({ error: err });
     } else {
-        next(err)
+        next(err);
     }
 };
+
 const errorHandler = (err, req, res, next) => {
     res.status(500);
-    res.render('error', { error: err })
+    res.render('error', { error: err });
 };
 
 app.use(bodyParser.json());
@@ -51,11 +54,11 @@ MongoClient.connect(MongodbUri, connectionOptions, (err, client) => {
     });
 });
 
-app.get('/', function (req, res) {
+app.get('/', (req, res) => {
     db.collection('quest').find({}).toArray().then((data) => {
         res.json(data);
     }).catch((err) => {
-        throw err
+        throw err;
     })
 });
 
