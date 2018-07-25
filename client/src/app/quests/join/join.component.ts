@@ -38,13 +38,15 @@ export class JoinComponent implements OnInit {
     if (!this.inputIsValid) return;
 
     const postBody = {
-      _id: this.quests[0]._id,
+      questId: this.quests[0]._id,
       name: this.name,
       email: this.email,
     };
 
     this.questService.join(postBody)
-      .subscribe(() => { }, error => {
+      .subscribe((participant) => {
+        console.log('participant', participant);
+      }, error => {
         console.log('error', error);
       })
   }

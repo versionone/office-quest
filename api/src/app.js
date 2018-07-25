@@ -62,6 +62,55 @@ app.get('/', (req, res) => {
 });
 
 app.post('/quest/join', (req, res) => {
-    console.log('join', req.body);
-    res.status(200).send();
+    const participantQuery = {
+        quest_id: req.body.questId,
+        email: req.body.email
+    };
+    db.collection('participant').findOne(participantQuery).then((doc) => {
+        if (doc) {
+            console.log(`The participant email '${doc.email}' already exists for quest '${doc.quest_id}', return participant _id '${doc._id}'`);
+            res.json({ _id: doc._id });
+        } else {
+            const newParticipant = {
+                name: req.body.name,
+                email: req.body.email,
+                quest_id: req.body.questId
+            };
+            db.collection('participant').insertOne(newParticipant).then((insertResult) => {
+                console.log(`A new participant with email '${newParticipant.email}' was inserted for quest '${newParticipant.quest_id}'`);
+                newParticipant._id = insertResult.insertedId;
+
+                const questQuery = {
+                    _id: ObjectId(req.body.questId),
+                };
+                db.collection('quest').findOne(questQuery).then((doc) => {
+                    if (doc) {
+                        const activities = doc.activities.map(activity => {
+                            return {
+                                quest_id: doc._id,
+                                participant_id: newParticipant._id,
+                                state: 0,
+                                organizer_email: doc.organizer_email,
+                                base_url: doc.base_url,
+                                ...activity,
+                                answer: {
+                                    ...activity.answer
+                                },
+                                email: {
+                                    ...activity.email
+                                },
+                            }
+                        });
+
+                        db.collection('participant_activity').insertMany(activities).then((insertResult) => {
+                            console.log(`'${insertResult.insertedCount}' participant activities were created, return participant _id '${newParticipant._id}'`);
+                            res.json({ _id: newParticipant._id });
+                        }).catch(err => { throw err; });
+                    } else {
+                        throw new Error(`A quest with _id '${req.body.questId}' was not found`);
+                    }
+                }).catch(err => { throw err; });
+            }).catch(err => { throw err; });
+        }
+    }).catch(err => { throw err; });
 });
