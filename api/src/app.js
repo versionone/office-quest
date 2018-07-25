@@ -1,18 +1,19 @@
 const express = require('express');
-const bodyParser = require("body-parser");
+const bodyParser = require('body-parser');
 const app = express();
 const MongoClient = require('mongodb').MongoClient;
+const ObjectId = require('mongodb').ObjectId;
 const MongodbUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/office_quest';
 
 let setHeaders = function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     res.header('Content-Type', 'application/json');
     next();
 };
 
 const logError = (err, req, res, next) => {
-    console.error("err.stack", err.stack);
+    console.error('err.stack', err.stack);
     next(err);
 };
 
@@ -45,12 +46,12 @@ MongoClient.connect(MongodbUri, connectionOptions, (err, client) => {
 
     // Save database object from the callback for reuse.
     db = client.db();
-    console.log("Database connection ready");
+    console.log('Database connection ready');
 
     // Initialize the app.
     const server = app.listen(process.env.PORT || 4201, () => {
         const port = server.address().port;
-        console.log("App now running on port", port);
+        console.log('App now running on port', port);
     });
 });
 
