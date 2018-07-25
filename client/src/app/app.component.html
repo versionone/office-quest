@@ -1,5 +1,5 @@
 <div style="text-align:center">
-  <div *ngIf="hasToken(); then activityTemplate else joinTemplate"></div>
+  <div *ngIf="isParticipant(); then activityTemplate else joinTemplate"></div>
 </div>
 
 <ng-template #activityTemplate>

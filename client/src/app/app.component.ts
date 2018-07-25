@@ -1,20 +1,20 @@
 import { Component } from '@angular/core';
-import { AuthenticationService } from './authentication.service';
+import { StorageService } from './storage.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   providers: [
-    AuthenticationService,
+    StorageService,
   ]
 })
 
 export class AppComponent {
 
-  constructor(private authenticationService: AuthenticationService) { }
+  constructor(private storageService: StorageService) { }
 
-  protected hasToken(): boolean {
-    return this.authenticationService.hasToken();
+  protected isParticipant(): boolean {
+    return !!this.storageService.getParticipantId();
   }
 }

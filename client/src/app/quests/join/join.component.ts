@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { QuestService } from '../quest.service';
+import { StorageService } from '../../storage.service';
 import { Quest } from '../quest';
-import {packageChunkSort} from "@angular-devkit/build-angular/src/angular-cli-files/utilities/package-chunk-sort";
 
 @Component({
   selector: 'app-join',
@@ -9,6 +9,7 @@ import {packageChunkSort} from "@angular-devkit/build-angular/src/angular-cli-fi
   styleUrls: ['./join.component.css'],
   providers: [
     QuestService,
+    StorageService,
   ],
 })
 
@@ -19,7 +20,10 @@ export class JoinComponent implements OnInit {
   protected email: string = '';
   protected inputIsValid?: boolean = null;
 
-  constructor(private questService: QuestService) { }
+  constructor(
+    private questService: QuestService,
+    private storageService: StorageService
+  ) { }
 
   private getQuests(): void {
     this.questService.getQuests()
@@ -46,6 +50,7 @@ export class JoinComponent implements OnInit {
     this.questService.join(postBody)
       .subscribe((participant) => {
         console.log('participant', participant);
+        this.storageService.saveParticipantId(participant)
       }, error => {
         console.log('error', error);
       })
