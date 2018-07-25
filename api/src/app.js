@@ -56,11 +56,9 @@ MongoClient.connect(MongodbUri, connectionOptions, (err, client) => {
 });
 
 app.get('/', (req, res) => {
-    db.collection('quest').find({}).toArray().then((data) => {
-        res.json(data);
-    }).catch((err) => {
-        throw err;
-    })
+    db.collection('quest').find({}).toArray().then((docs) => {
+        res.json(docs);
+    }).catch(err => { throw err; });
 });
 
 app.post('/quest/join', (req, res) => {
