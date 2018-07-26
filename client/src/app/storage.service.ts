@@ -10,7 +10,7 @@ export class StorageService {
     return localStorage.getItem("participantId");
   }
 
-  public saveParticipantId(participant): void {
+  public setParticipantId(participant): void {
     localStorage.setItem("participantId", JSON.stringify(participant._id));
   }
 }
