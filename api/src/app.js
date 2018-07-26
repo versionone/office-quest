@@ -125,3 +125,24 @@ app.post('/quest/join', (req, res) => {
         }
     }).catch(err => { throw err; });
 });
+
+app.get('/participantActivity', (req, res) => {
+    const participantActivityQuery = {
+        participant_id: req.query.participantId,
+        state: ActivityState.ACTIVE,
+    };
+
+    const participantActivityProjection = {
+        _id: 0,
+        organizer_email : 1,
+        base_url : 1,
+        type : 1,
+        message : 1,
+        activity_url: 1,
+        answer_url : 1,
+    };
+
+    db.collection('participant_activity').findOne(participantActivityQuery, {projection: participantActivityProjection}).then((doc) => {
+        res.json(doc);
+    }).catch(err => { throw err; });
+});
