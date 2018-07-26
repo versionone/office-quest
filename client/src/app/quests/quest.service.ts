@@ -17,6 +17,7 @@ export class QuestService {
   public getQuests(): Observable<Object> {
     return this.http.get(this.baseUrl);
   }
+
   public join(postBody: object) {
     return this.http.post(this.joinUrl, postBody, this.headers)
   }
