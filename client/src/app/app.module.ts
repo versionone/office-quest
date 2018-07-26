@@ -4,11 +4,13 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { JoinComponent } from './quests/join/join.component';
+import { MainComponent } from './activities/main/main.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    JoinComponent
+    JoinComponent,
+    MainComponent
   ],
   imports: [
     BrowserModule,
