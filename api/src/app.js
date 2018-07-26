@@ -4,6 +4,12 @@ const app = express();
 const MongoClient = require('mongodb').MongoClient;
 const ObjectId = require('mongodb').ObjectId;
 const MongodbUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/office_quest';
+const ActivityState = {
+  FUTURE: 0,
+  STAGED: 32,
+  ACTIVE: 64,
+  COMPLETE: 128,
+};
 
 let setHeaders = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
@@ -89,7 +95,7 @@ app.post('/quest/join', (req, res) => {
                             return {
                                 quest_id: doc._id,
                                 participant_id: newParticipant._id,
-                                state: 0,
+                                state: ActivityState.FUTURE,
                                 organizer_email: doc.organizer_email,
                                 base_url: doc.base_url,
                                 ...activity,
@@ -101,6 +107,7 @@ app.post('/quest/join', (req, res) => {
                                 },
                             }
                         });
+                        activities[0].state = ActivityState.STAGED;
 
                         db.collection('participant_activity').insertMany(activities).then((insertResult) => {
                             console.log(`'${insertResult.insertedCount}' participant activities were created, return participant _id '${newParticipant._id}'`);
