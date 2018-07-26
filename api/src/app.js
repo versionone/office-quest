@@ -62,7 +62,11 @@ MongoClient.connect(MongodbUri, connectionOptions, (err, client) => {
 });
 
 app.get('/', (req, res) => {
-    db.collection('quest').find({}).toArray().then((docs) => {
+    const questProjection = {
+        _id: 1,
+        name: 1,
+    };
+    db.collection('quest').find({}, {projection: questProjection}).toArray().then((docs) => {
         res.json(docs);
     }).catch(err => { throw err; });
 });
