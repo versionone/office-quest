@@ -97,8 +97,8 @@ app.post('/quest/join', (req, res) => {
                     if (doc) {
                         const activities = doc.activities.map(activity => {
                             return {
-                                quest_id: doc._id,
-                                participant_id: newParticipant._id,
+                                quest_id: doc._id.toString(),
+                                participant_id: newParticipant._id.toString(),
                                 state: ActivityState.FUTURE,
                                 organizer_email: doc.organizer_email,
                                 base_url: doc.base_url,
