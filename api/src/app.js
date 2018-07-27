@@ -103,9 +103,6 @@ app.post('/quest/join', (req, res) => {
                                 organizer_email: doc.organizer_email,
                                 base_url: doc.base_url,
                                 ...activity,
-                                answer: {
-                                    ...activity.answer
-                                },
                                 email: {
                                     ...activity.email
                                 },
