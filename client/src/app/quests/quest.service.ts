@@ -9,13 +9,14 @@ import { Observable } from 'rxjs/internal/Observable';
 export class QuestService {
 
   private baseUrl = 'http://localhost:4201/';
+  private questsUrl = this.baseUrl.concat('quests');
   private joinUrl = this.baseUrl.concat('quest/join');
   private headers = { headers: {'Content-Type': 'application/json'} };
 
   constructor(private http:HttpClient) { }
 
   public getQuests(): Observable<Object> {
-    return this.http.get(this.baseUrl);
+    return this.http.get(this.questsUrl);
   }
 
   public join(postBody: object) {

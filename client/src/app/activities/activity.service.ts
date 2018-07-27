@@ -9,7 +9,7 @@ import { Observable } from 'rxjs/internal/Observable';
 export class ActivityService {
 
   private baseUrl = 'http://localhost:4201/';
-  private activityUrl = this.baseUrl.concat('participantActivity');
+  private activityUrl = this.baseUrl.concat('currentActivity');
 
   constructor(private http:HttpClient) { }
 

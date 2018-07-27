@@ -61,7 +61,7 @@ MongoClient.connect(MongodbUri, connectionOptions, (err, client) => {
     });
 });
 
-app.get('/', (req, res) => {
+app.get('/quests', (req, res) => {
     const questProjection = {
         _id: 1,
         name: 1,
@@ -123,7 +123,7 @@ app.post('/quest/join', (req, res) => {
     }).catch(err => { throw err; });
 });
 
-app.get('/participantActivity', (req, res) => {
+app.get('/currentActivity', (req, res) => {
     const participantActivityQuery = {
         participant_id: req.query.participantId,
         state: ActivityState.ACTIVE,
