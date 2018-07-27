@@ -1,5 +1,5 @@
 <div *ngIf="activity">
-  <div>{{activity.message}}</div>
+  <div [innerHtml]="activity.message | safeHtml"></div>
 </div>
 
 <div *ngIf="!activity">

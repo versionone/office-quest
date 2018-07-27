@@ -5,12 +5,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { JoinComponent } from './quests/join/join.component';
 import { MainComponent } from './activities/main/main.component';
+import { SafeHtmlPipe } from './activities/safe-html.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     JoinComponent,
-    MainComponent
+    MainComponent,
+    SafeHtmlPipe
   ],
   imports: [
     BrowserModule,
