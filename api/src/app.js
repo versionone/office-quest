@@ -98,10 +98,12 @@ app.post('/quest/join', (req, res) => {
                         const activities = doc.activities.map(activity => {
                             return {
                                 quest_id: doc._id.toString(),
-                                participant_id: newParticipant._id.toString(),
-                                state: ActivityState.FUTURE,
                                 organizer_email: doc.organizer_email,
                                 base_url: doc.base_url,
+                                participant_id: newParticipant._id.toString(),
+                                participant_name: req.body.name,
+                                participant_email: req.body.email,
+                                state: ActivityState.FUTURE,
                                 ...activity,
                                 email: {
                                     ...activity.email
