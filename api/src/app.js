@@ -50,11 +50,9 @@ MongoClient.connect(MongodbUri, connectionOptions, (err, client) => {
         process.exit(1);
     }
 
-    // Save database object from the callback for reuse.
     db = client.db();
     console.log('Database connection ready');
 
-    // Initialize the app.
     const server = app.listen(process.env.PORT || 4201, () => {
         const port = server.address().port;
         console.log('App now running on port', port);
