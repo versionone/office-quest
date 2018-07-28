@@ -64,7 +64,7 @@ app.get('/quests', (req, res) => {
         _id: 1,
         name: 1,
     };
-    db.collection('quest').find({}, {projection: questProjection}).toArray().then((docs) => {
+    db.collection('quest').find({}, {projection: questProjection}).toArray().then(docs => {
         res.json(docs);
     }).catch(err => { throw err; });
 });
@@ -74,7 +74,7 @@ app.post('/quest/join', (req, res) => {
         quest_id: req.body.questId,
         email: req.body.email
     };
-    db.collection('participant').findOne(participantQuery).then((doc) => {
+    db.collection('participant').findOne(participantQuery).then(doc => {
         if (doc) {
             console.log(`The participant email '${doc.email}' already exists for quest '${doc.quest_id}', return participant _id '${doc._id}'`);
             res.json({ _id: doc._id });
@@ -84,14 +84,14 @@ app.post('/quest/join', (req, res) => {
                 email: req.body.email,
                 quest_id: req.body.questId
             };
-            db.collection('participant').insertOne(newParticipant).then((insertResult) => {
+            db.collection('participant').insertOne(newParticipant).then(insertResult => {
                 console.log(`A new participant with email '${newParticipant.email}' was inserted for quest '${newParticipant.quest_id}'`);
                 newParticipant._id = insertResult.insertedId;
 
                 const questQuery = {
                     _id: ObjectId(req.body.questId),
                 };
-                db.collection('quest').findOne(questQuery).then((doc) => {
+                db.collection('quest').findOne(questQuery).then(doc => {
                     if (doc) {
                         const activities = doc.activities.map(activity => {
                             return {
@@ -108,9 +108,9 @@ app.post('/quest/join', (req, res) => {
                                 },
                             }
                         });
-                        activities[0].state = ActivityState.STAGED;
+                        activities[0].state = ActivityState.STAGED  ;
 
-                        db.collection('participant_activity').insertMany(activities).then((insertResult) => {
+                        db.collection('participant_activity').insertMany(activities).then(insertResult => {
                             console.log(`'${insertResult.insertedCount}' participant activities were created, return participant _id '${newParticipant._id}'`);
                             res.json({ _id: newParticipant._id });
                         }).catch(err => { throw err; });
