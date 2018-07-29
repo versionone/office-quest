@@ -38,5 +38,5 @@ enum CompletionType {
 class Email {
   subject: string;
   message: string;
-  file_path: string;
+  files_to_attach: string;
 }
