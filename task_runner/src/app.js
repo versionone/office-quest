@@ -1,6 +1,11 @@
+const nodemailer = require('nodemailer');
+const emailUser = process.env.EMAIL_USER || 'user';
+const emailPass = process.env.EMAIL_PASS || 'pass';
+
 const MongoClient = require('mongodb').MongoClient;
 const ObjectId = require('mongodb').ObjectId;
-const MongodbUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/office_quest';
+const mongodbUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/office_quest';
+
 const ActivityState = {
     FUTURE: 0,
     STAGED: 32,
@@ -10,7 +15,7 @@ const ActivityState = {
 
 let db;
 let connectionOptions = { useNewUrlParser: true };
-MongoClient.connect(MongodbUri, connectionOptions, (err, client) => {
+MongoClient.connect(mongodbUri, connectionOptions, (err, client) => {
     if (err) {
         console.log(err);
         process.exit(1);
@@ -79,15 +84,46 @@ const app = {
     processUnsentNotifications: () => {
         db.collection('notification').find({sent: false}).toArray().then(docs => {
             docs.forEach(doc => {
-                console.log(`Sending notification to '${doc.participant_email}' for participant activity '${doc.participant_activity_id}'`);
-                // now actually send it wrapped in a promise or something
+                app.sendEmailNotification(doc).then(() => {
+                    const notificationUpdate = {
+                        $set: {sent: true},
+                    };
+                    db.collection('notification').updateOne({_id: doc._id}, notificationUpdate).then(() => {
+                        console.log(`Email sent to '${doc.participant_email}' for participant activity '${doc.participant_activity_id}' and updated notification ${doc._id.toString()} to sent`);
+                    }).catch(err => {
+                        console.error(`Update notification failed because: ${err}`);
+                    });
+                }).catch(err => {
+                    console.error(`Send email failed because: ${err}`);
+                });
+            })
+        })
+    },
 
-                const notificationUpdate = {
-                    $set: {sent: true},
-                };
-                db.collection('notification').updateOne({_id: doc._id}, notificationUpdate).then(() => {
-                    console.log(`Notification ${doc._id} was set to sent`);
-                })
+    sendEmailNotification: (notification) => {
+        const transporter = nodemailer.createTransport({
+            host: 'smtp.office365.com',
+            port: 587,
+            auth: {
+                user: emailUser,
+                pass: emailPass
+            },
+            tls: {
+                ciphers: 'SSLv3'
+            }
+        });
+
+        let mailOptions = {
+            from: '"Mickey Rogers" <mrogers@collab.net>',
+            to: notification.participant_email,
+            subject: notification.email.subject,
+            html: notification.email.message
+        };
+
+        return new Promise((resolve, reject) => {
+            transporter.sendMail(mailOptions, (err, info) => {
+                if (err) reject(err);
+                else resolve(info);
             })
         })
     },
