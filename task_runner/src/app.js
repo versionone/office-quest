@@ -42,10 +42,15 @@ const app = {
 
         db.collection('participant_activity').find(participantActivityQuery, {projection: participantActivityProjection}).toArray().then(docs => {
             docs.forEach(participant_activity_doc => {
-                db.collection('notification').findOne().then(doc => {
+
+                const participantActivityId = participant_activity_doc._id.toString();
+                const notificationQuery = {
+                    participant_activity_id: participantActivityId,
+                    participant_email: participant_activity_doc.participant_email,
+                };
+                db.collection('notification').findOne(notificationQuery).then(doc => {
                     if (doc) return;
 
-                    const participantActivityId = participant_activity_doc._id.toString();
                     const notification = {
                         participant_activity_id: participantActivityId,
                         participant_email: participant_activity_doc.participant_email,
