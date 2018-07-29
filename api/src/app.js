@@ -99,8 +99,6 @@ app.post('/quest/join', (req, res) => {
                         const activities = doc.activities.map(activity => {
                             return {
                                 quest_id: doc._id.toString(),
-                                organizer_email: doc.organizer_email,
-                                base_url: doc.base_url,
                                 participant_id: newParticipant._id.toString(),
                                 participant_name: req.body.name,
                                 participant_email: req.body.email,
@@ -134,12 +132,8 @@ app.get('/currentActivity', (req, res) => {
 
     const participantActivityProjection = {
         _id: 0,
-        organizer_email : 1,
-        base_url : 1,
         type : 1,
         message : 1,
-        activity_url: 1,
-        answer_url : 1,
     };
 
     db.collection('participant_activity').findOne(participantActivityQuery, {projection: participantActivityProjection}).then((doc) => {

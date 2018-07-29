@@ -3,15 +3,11 @@ export class Activity {
   quest_id: string;
   participant_id: string;
   state: ActivityState;
-  organizer_email: string;
-  base_url: string;
   type: ActivityType;
   start_datetime: Date;
   completion_type: CompletionType;
   message: string;
   answer: any;
-  activity_url: string;
-  answer_url: string;
   email: Email;
 }
 
