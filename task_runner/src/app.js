@@ -1,6 +1,7 @@
 const nodemailer = require('nodemailer');
 const emailUser = process.env.EMAIL_USER || 'user';
 const emailPass = process.env.EMAIL_PASS || 'pass';
+const attachmentFilePath = 'C:\\Temp\\';
 
 const MongoClient = require('mongodb').MongoClient;
 const ObjectId = require('mongodb').ObjectId;
@@ -119,6 +120,15 @@ const app = {
             subject: notification.email.subject,
             html: notification.email.message
         };
+
+        if (notification.email.files_to_attach) {
+            mailOptions.attachments = notification.email.files_to_attach.map((fileToAttach) => {
+                return {
+                    filename: fileToAttach,
+                    path: attachmentFilePath.concat(fileToAttach),
+                }
+            })
+        }
 
         return new Promise((resolve, reject) => {
             transporter.sendMail(mailOptions, (err, info) => {
