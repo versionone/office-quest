@@ -4,7 +4,7 @@ import { StorageService } from '../../storage.service';
 import { Activity } from '../activity';
 
 @Component({
-  selector: 'app-main',
+  selector: 'app-main-activity',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css'],
   providers: [

@@ -4,7 +4,7 @@ import { StorageService } from '../../storage.service';
 import { Quest } from '../quest';
 
 @Component({
-  selector: 'app-join',
+  selector: 'app-join-quest',
   templateUrl: './join.component.html',
   styleUrls: ['./join.component.css'],
   providers: [

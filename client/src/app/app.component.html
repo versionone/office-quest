@@ -1,11 +1,11 @@
 <div style="text-align:center">
-  <div *ngIf="isParticipant(); then activityTemplate else joinTemplate"></div>
+  <div *ngIf="isParticipant(); then mainActivityTemplate else joinQuestTemplate"></div>
 </div>
 
-<ng-template #activityTemplate>
-  <app-main></app-main>
+<ng-template #mainActivityTemplate>
+  <app-main-activity></app-main-activity>
 </ng-template>
 
-<ng-template #joinTemplate>
-  <app-join></app-join>
+<ng-template #joinQuestTemplate>
+  <app-join-quest></app-join-quest>
 </ng-template>
