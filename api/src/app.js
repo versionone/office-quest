@@ -77,7 +77,8 @@ app.post('/quest/join', (req, res) => {
         quest_id: req.body.questId,
         email: req.body.email
     };
-    db.collection('participant').findOne(participantQuery).then(doc => {
+
+    db.collection('participant').findOne(participantQuery, {projection: {_id: 1}}).then(doc => {
         if (doc) {
             console.log(`The participant email '${doc.email}' already exists for quest '${doc.quest_id}', return participant _id '${doc._id}'`);
             res.json({ _id: doc._id });
@@ -94,9 +95,16 @@ app.post('/quest/join', (req, res) => {
                 const questQuery = {
                     _id: ObjectId(req.body.questId),
                 };
-                db.collection('quest').findOne(questQuery).then(doc => {
+
+                const questProjection = {
+                    _id: 1,
+                    app_url: 1,
+                    activities: 1,
+                };
+                db.collection('quest').findOne(questQuery, {projection: questProjection}).then(doc => {
                     if (doc) {
                         const activities = doc.activities.map(activity => {
+                            activity.email.message = activity.email.message.replace('{{app_url}}', doc.app_url);
                             return {
                                 quest_id: doc._id.toString(),
                                 participant_id: newParticipant._id.toString(),

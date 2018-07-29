@@ -36,6 +36,7 @@ const app = {
         };
 
         const participantActivityProjection = {
+            _id: 1,
             participant_email : 1,
             email : 1,
         };
@@ -48,7 +49,7 @@ const app = {
                     participant_activity_id: participantActivityId,
                     participant_email: participant_activity_doc.participant_email,
                 };
-                db.collection('notification').findOne(notificationQuery).then(doc => {
+                db.collection('notification').findOne(notificationQuery, {projection: {_id: 1}}).then(doc => {
                     if (doc) return;
 
                     const notification = {
@@ -88,7 +89,14 @@ const app = {
     },
 
     processUnsentNotifications: () => {
-        db.collection('notification').find({sent: false}).toArray().then(docs => {
+        const notificationProjection = {
+            _id: 1,
+            participant_activity_id: 1,
+            participant_email: 1,
+            email: 1,
+        };
+
+        db.collection('notification').find({sent: false}, {projection: notificationProjection}).toArray().then(docs => {
             docs.forEach(doc => {
                 app.sendEmailNotification(doc).then(() => {
                     const notificationUpdate = {
