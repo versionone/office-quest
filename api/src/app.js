@@ -4,6 +4,9 @@ const app = express();
 const MongoClient = require('mongodb').MongoClient;
 const ObjectId = require('mongodb').ObjectId;
 const MongodbUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/office_quest';
+const hostAddress = 'localhost';
+const hostPort = process.env.PORT || 4201;
+
 const ActivityState = {
   FUTURE: 0,
   STAGED: 32,
@@ -53,7 +56,7 @@ MongoClient.connect(MongodbUri, connectionOptions, (err, client) => {
     db = client.db();
     console.log('Database connection ready');
 
-    const server = app.listen(process.env.PORT || 4201, () => {
+    const server = app.listen(hostPort, hostAddress,() => {
         const port = server.address().port;
         console.log('App now running on port', port);
     });
