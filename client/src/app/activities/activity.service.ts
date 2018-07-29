@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs/internal/Observable';
+import { ConfigService } from '../config.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,10 +9,14 @@ import { Observable } from 'rxjs/internal/Observable';
 
 export class ActivityService {
 
-  private baseUrl = 'http://localhost:4201/';
-  private activityUrl = this.baseUrl.concat('currentActivity');
+  private readonly activityUrl;
 
-  constructor(private http:HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private configService: ConfigService,
+    ) {
+    this.activityUrl = this.configService.getApiBaseUrl().concat('currentActivity');
+  }
 
   public getCurrentActivity(participantId): Observable<Object> {
     return this.http.get(this.activityUrl.concat(`?participantId=${participantId}`));

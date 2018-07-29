@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs/internal/Observable';
+import { ConfigService } from '../config.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,12 +9,18 @@ import { Observable } from 'rxjs/internal/Observable';
 
 export class QuestService {
 
-  private baseUrl = 'http://localhost:4201/';
-  private questsUrl = this.baseUrl.concat('quests');
-  private joinUrl = this.baseUrl.concat('quest/join');
-  private headers = { headers: {'Content-Type': 'application/json'} };
+  private readonly questsUrl: string;
+  private readonly joinUrl: string;
+  private readonly headers: object;
 
-  constructor(private http:HttpClient) { }
+  constructor(
+    private http:HttpClient,
+    private configService: ConfigService,
+    ) {
+    this.questsUrl = this.configService.getApiBaseUrl().concat('quests');
+    this.joinUrl = this.configService.getApiBaseUrl().concat('quest/join');
+    this.headers = this.configService.getApiRequestHeaders();
+  }
 
   public getQuests(): Observable<Object> {
     return this.http.get(this.questsUrl);
