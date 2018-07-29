@@ -147,6 +147,6 @@ const app = {
         setInterval(() => {
             app.processStagedActivities();
             app.processUnsentNotifications();
-        }, 10000);
+        }, 5000);
     }
 };
