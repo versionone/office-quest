@@ -2,3 +2,11 @@
   padding: 10px;
   text-align: center;
 }
+
+.success {
+  color: darkgreen;
+}
+
+.error {
+  color: red;
+}

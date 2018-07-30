@@ -24,6 +24,7 @@ export class MainComponent implements OnInit {
   protected activityType;
   protected answer: string;
   protected inputIsValid?: boolean = null;
+  protected answerIsCorrect?: boolean = null;
 
   constructor(
     private activityService: ActivityService,
@@ -49,17 +50,19 @@ export class MainComponent implements OnInit {
   }
 
   protected onSubmitClick() {
+    this.answerIsCorrect = null;
     this.inputIsValid = this.isInputValid();
     if (!this.inputIsValid) return;
 
     const postBody = {
+      participantId: this.participantId,
       participantActivityId: this.activity._id,
       answer: this.answer,
     };
 
     this.activityService.submitAnswer(postBody)
-      .subscribe((participant) => {
-        this.storageService.setParticipantId(participant)
+      .subscribe((response: any) => {
+        this.answerIsCorrect = response.isCorrectAnswer
       }, error => {
         console.log('error', error);
       })

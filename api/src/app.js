@@ -139,7 +139,7 @@ app.get('/activity/current', (req, res) => {
     };
 
     const participantActivityProjection = {
-        _id: 0,
+        _id: 1,
         type : 1,
         message : 1,
     };
@@ -150,6 +150,27 @@ app.get('/activity/current', (req, res) => {
 });
 
 app.post('/activity/submitAnswer', (req, res) => {
-    console.log('submitAnswer');
-    res.send("success");
+    db.collection('participant_activity').findOne({_id: ObjectId(req.body.participantActivityId)}, {projection: {answer: 1}}).then((doc) => {
+        if (doc) {
+            if (req.body.answer.toLowerCase() === doc.answer.toLowerCase())
+                db.collection('participant_activity').updateOne({_id: ObjectId(req.body.participantActivityId)}, {$set: {state: ActivityState.COMPLETE}}).then(() => {
+                    console.log(`Updated participant activity '${req.body.participantActivityId}' state to COMPLETE`);
+                    const participantActivityUpdateFilter = {
+                        participant_id: req.body.participantId,
+                        state: ActivityState.FUTURE,
+                    };
+
+                    db.collection('participant_activity').updateOne(participantActivityUpdateFilter, {$set: {state: ActivityState.STAGED}}).then((doc) => {
+                        console.log(`Updated next participant activity state to STAGED for participant '${req.body.participantId}'`);
+                    }).catch(err => { throw err; });
+
+                    res.json({isCorrectAnswer: true});
+                }).catch(err => { throw err; });
+            else {
+                res.json({isCorrectAnswer: false});
+            }
+        } else {
+            throw new Error(`A participantActivity with _id '${req.body.participantActivityId}' was not found`);
+        }
+    }).catch(err => { throw err; });
 });

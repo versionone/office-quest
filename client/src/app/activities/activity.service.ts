@@ -26,7 +26,7 @@ export class ActivityService {
     return this.http.get(this.currentActivityUrl.concat(`?participantId=${participantId}`));
   }
 
-  public submitAnswer(postBody: { participantActivityId: string; answer: string }) {
+  public submitAnswer(postBody: { participantId: string; participantActivityId: string; answer: string }) {
     return this.http.post(this.submitAnswerUrl, postBody, this.headers)
   }
 }
