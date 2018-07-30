@@ -49,7 +49,6 @@ export class JoinComponent implements OnInit {
 
     this.questService.join(postBody)
       .subscribe((participant) => {
-        console.log('participant', participant);
         this.storageService.setParticipantId(participant)
       }, error => {
         console.log('error', error);
