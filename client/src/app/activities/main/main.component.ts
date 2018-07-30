@@ -18,7 +18,7 @@ import {
 
 export class MainComponent implements OnInit {
 
-  private participantId: string;
+  private readonly participantId: string;
   protected activity: Activity;
   protected type: number;
   protected activityType;
@@ -37,6 +37,7 @@ export class MainComponent implements OnInit {
   ngOnInit() {
     this.activityService.getCurrentActivity(this.participantId)
       .subscribe((activity) => {
+        if (!activity) return;
         this.activity = activity as Activity;
         this.type = this.activity.type;
       },error => {
