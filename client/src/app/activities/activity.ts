@@ -3,7 +3,7 @@ export class Activity {
   quest_id: string;
   participant_id: string;
   state: ActivityState;
-  type: ActivityType;
+  type: number;
   start_datetime: Date;
   completion_type: CompletionType;
   message: string;
@@ -18,7 +18,7 @@ enum ActivityState {
   COMPLETE = 128,
 }
 
-enum ActivityType {
+export enum ActivityType {
   GUI = 0,
   Online = 1,
   Scramble = 2,

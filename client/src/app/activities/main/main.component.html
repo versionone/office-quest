@@ -1,5 +1,18 @@
-<div *ngIf="activity">
+<div *ngIf="type==activityType.GUI">
   <div [innerHtml]="activity.message | safeHtml"></div>
+</div>
+
+<div *ngIf="type==activityType.Online">
+  <div [innerHtml]="activity.message | safeHtml"></div>
+</div>
+
+<div *ngIf="type==activityType.Scramble || type==activityType.Hunt">
+  <div [innerHtml]="activity.message | safeHtml"></div>
+  <label>Answer:
+    <input [(ngModel)]="answer" type="text" placeholder="enter your answer">
+  </label>
+  <button (click)="onSubmitClick()">Submit</button>
+  <div *ngIf="inputIsValid == false" class="error">You must enter an answer to submit</div>
 </div>
 
 <div *ngIf="!activity">

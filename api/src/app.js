@@ -132,7 +132,7 @@ app.post('/quest/join', (req, res) => {
     }).catch(err => { throw err; });
 });
 
-app.get('/currentActivity', (req, res) => {
+app.get('/activity/current', (req, res) => {
     const participantActivityQuery = {
         participant_id: req.query.participantId,
         state: ActivityState.ACTIVE,
@@ -147,4 +147,9 @@ app.get('/currentActivity', (req, res) => {
     db.collection('participant_activity').findOne(participantActivityQuery, {projection: participantActivityProjection}).then((doc) => {
         res.json(doc);
     }).catch(err => { throw err; });
+});
+
+app.post('/activity/submitAnswer', (req, res) => {
+    console.log('submitAnswer');
+    res.send("success");
 });
