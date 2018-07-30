@@ -26,7 +26,7 @@ export class QuestService {
     return this.http.get(this.questsUrl);
   }
 
-  public join(postBody: object) {
+  public join(postBody: {questId: string, name: string, email: string}) {
     return this.http.post(this.joinUrl, postBody, this.headers)
   }
 }
