@@ -10,6 +10,7 @@ const mongodbUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/office_
 const ActivityState = {
     FUTURE: 0,
     STAGED: 32,
+    NOTIFYING: 48,
     ACTIVE: 64,
     COMPLETE: 128,
 };

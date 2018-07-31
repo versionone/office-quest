@@ -14,6 +14,7 @@ export class Activity {
 enum ActivityState {
   FUTURE = 0,
   STAGED = 32,
+  NOTIFYING = 48,
   ACTIVE = 64,
   COMPLETE = 128,
 }

@@ -8,10 +8,11 @@ const hostAddress = 'localhost';
 const hostPort = process.env.PORT || 4201;
 
 const ActivityState = {
-  FUTURE: 0,
-  STAGED: 32,
-  ACTIVE: 64,
-  COMPLETE: 128,
+    FUTURE: 0,
+    STAGED: 32,
+    NOTIFYING: 48,
+    ACTIVE: 64,
+    COMPLETE: 128,
 };
 
 let setHeaders = function(req, res, next) {
