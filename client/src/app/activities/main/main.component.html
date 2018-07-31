@@ -1,20 +1,21 @@
-<div *ngIf="type==activityType.GUI">
+<div *ngIf="activity">
   <div [innerHtml]="activity.message | safeHtml"></div>
-</div>
 
-<div *ngIf="type==activityType.Online">
-  <div [innerHtml]="activity.message | safeHtml"></div>
-</div>
+  <div *ngIf="type==activityType.GUI">
+  </div>
 
-<div *ngIf="type==activityType.Scramble || type==activityType.Hunt">
-  <div [innerHtml]="activity.message | safeHtml"></div>
-  <label>Answer:
-    <input [(ngModel)]="answer" type="text" placeholder="enter your answer">
-  </label>
-  <button (click)="onSubmitClick()">Submit</button>
-  <div *ngIf="inputIsValid == false" class="error">You must enter an answer to submit</div>
-  <div *ngIf="answerIsCorrect == false" class="error">Your answer is incorrect, please try again</div>
-  <div *ngIf="answerIsCorrect == true" class="success">Congratulations, you have completed this activity! We'll send you an email when your next activity is ready.</div>
+  <div *ngIf="type==activityType.Online">
+  </div>
+
+  <div *ngIf="type==activityType.Scramble || type==activityType.Hunt">
+    <label>Answer:
+      <input [(ngModel)]="answer" type="text" placeholder="enter your answer">
+    </label>
+    <button (click)="onSubmitClick()">Submit</button>
+    <div *ngIf="inputIsValid == false" class="error">You must enter an answer to submit</div>
+    <div *ngIf="answerIsCorrect == false" class="error">Your answer is incorrect, please try again</div>
+    <div *ngIf="answerIsCorrect == true" class="success">Congratulations, you have completed this activity! We'll send you an email when your next activity is ready.</div>
+  </div>
 </div>
 
 <div *ngIf="!activity">
