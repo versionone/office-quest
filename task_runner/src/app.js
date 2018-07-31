@@ -42,77 +42,25 @@ const app = {
             email : 1,
         };
 
-        db.collection('participant_activity').find(participantActivityQuery, {projection: participantActivityProjection}).toArray().then(docs => {
-            docs.forEach(participant_activity_doc => {
+        db.collection('participant_activity').findOne(participantActivityQuery, {projection: participantActivityProjection}).then(doc => {
+            if (!doc) return;
 
-                const participantActivityId = participant_activity_doc._id.toString();
-                const notificationQuery = {
-                    participant_activity_id: participantActivityId,
-                    participant_email: participant_activity_doc.participant_email,
-                };
-                db.collection('notification').findOne(notificationQuery, {projection: {_id: 1}}).then(doc => {
-                    if (doc) return;
-
-                    const notification = {
-                        participant_activity_id: participantActivityId,
-                        participant_email: participant_activity_doc.participant_email,
-                        email: {
-                            ...participant_activity_doc.email,
-                        },
-                        sent: false,
-                    };
-
-                    db.collection('notification').insertOne(notification).then(insertResult => {
-                        console.log(`A new notification to email '${notification.participant_email}' was inserted for participant activity '${participantActivityId}'`);
-
-                        const notificationId = insertResult.insertedId.toString();
-                        const participantActivityUpdate = {
-                            $set: {
-                                state: ActivityState.ACTIVE,
-                                notification_id: notificationId,
-                            },
-                        };
-                        db.collection('participant_activity').updateOne({_id: ObjectId(participantActivityId)}, participantActivityUpdate).then(() => {
-                            console.log(`Updated participant activity '${participantActivityId}' with notification _id '${notificationId}' and set to ACTIVE`);
-                        }).catch(err => {
-                            console.error(`Update participant activity failed because: ${err}`);
-                        });
-                    }).catch(err => {
-                        console.error(`Insert into notification failed because: ${err}`);
-                    });
-                }).catch(err => {
-                    console.error(`Find notification failed because: ${err}`);
-                });
-            })
-        }).catch(err => {
-            console.error(`Find participant activities failed because: ${err}`);
-        });
-    },
-
-    processUnsentNotifications: () => {
-        const notificationProjection = {
-            _id: 1,
-            participant_activity_id: 1,
-            participant_email: 1,
-            email: 1,
-        };
-
-        db.collection('notification').find({sent: false}, {projection: notificationProjection}).toArray().then(docs => {
-            docs.forEach(doc => {
+            db.collection('participant_activity').updateOne({_id: doc._id}, {$set: {state: ActivityState.NOTIFYING}}).then(() => {
                 app.sendEmailNotification(doc).then(() => {
-                    const notificationUpdate = {
-                        $set: {sent: true},
-                    };
-                    db.collection('notification').updateOne({_id: doc._id}, notificationUpdate).then(() => {
-                        console.log(`Email sent to '${doc.participant_email}' for participant activity '${doc.participant_activity_id}' and updated notification ${doc._id.toString()} to sent`);
+                    db.collection('participant_activity').updateOne({_id: doc._id}, {$set: {state: ActivityState.ACTIVE}}).then(() => {
+                        // Nothing to do here...move along
                     }).catch(err => {
-                        console.error(`Update notification failed because: ${err}`);
+                        console.error(`Update participant activity '${doc._id.toString()}' state to ACTIVE failed because: ${err}`);
                     });
                 }).catch(err => {
-                    console.error(`Send email failed because: ${err}`);
+                    console.error(`Send email to '${doc.participant_email}' for participant activity '${doc._id.toString()}' failed because: ${err}`);
                 });
-            })
-        })
+            }).catch(err => {
+                console.error(`Update participant activity '${doc._id.toString()}' state to NOTIFYING failed because: ${err}`);
+            });
+        }).catch(err => {
+            console.error(`Find participant activity failed because: ${err}`);
+        });
     },
 
     sendEmailNotification: (notification) => {
@@ -155,7 +103,6 @@ const app = {
     initialize: () => {
         setInterval(() => {
             app.processStagedActivities();
-            app.processUnsentNotifications();
-        }, 10000);
+        }, 5000);
     }
 };
