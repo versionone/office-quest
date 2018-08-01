@@ -15,10 +15,10 @@ import { Quest } from '../quest';
 
 export class JoinComponent implements OnInit {
 
-  protected quests: Quest[];
-  protected name: string = '';
-  protected email: string = '';
-  protected inputIsValid?: boolean = null;
+  public quests: Quest[];
+  public name: string = '';
+  public email: string = '';
+  public inputIsValid?: boolean = null;
 
   constructor(
     private questService: QuestService,
@@ -37,7 +37,7 @@ export class JoinComponent implements OnInit {
       (!!this.email && this.email.toLowerCase().includes('@collab.net') && this.email.length > 11);
   }
 
-  protected onJoinClick() {
+  public onJoinClick() {
     this.inputIsValid = this.isInputValid();
     if (!this.inputIsValid) return;
 

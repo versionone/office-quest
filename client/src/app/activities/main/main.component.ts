@@ -19,12 +19,12 @@ import {
 export class MainComponent implements OnInit {
 
   private readonly participantId: string;
-  protected activity: Activity;
-  protected type: number;
-  protected activityType;
-  protected answer: string;
-  protected inputIsValid?: boolean = null;
-  protected answerIsCorrect?: boolean = null;
+  public activity: Activity;
+  public type: number;
+  public activityType;
+  public answer: string;
+  public inputIsValid?: boolean = null;
+  public answerIsCorrect?: boolean = null;
 
   constructor(
     private activityService: ActivityService,
@@ -50,7 +50,7 @@ export class MainComponent implements OnInit {
     return !!this.answer;
   }
 
-  protected onSubmitClick() {
+  public onSubmitClick() {
     this.answerIsCorrect = null;
     this.inputIsValid = this.isInputValid();
     if (!this.inputIsValid) return;

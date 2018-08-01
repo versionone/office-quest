@@ -14,7 +14,7 @@ export class AppComponent {
 
   constructor(private storageService: StorageService) { }
 
-  protected isParticipant(): boolean {
+  public isParticipant(): boolean {
     return !!this.storageService.getParticipantId();
   }
 }
