@@ -19,6 +19,7 @@ import {
 export class MainComponent implements OnInit {
 
   private readonly participantId: string;
+  private keydownEvents = [];
   public activity: Activity;
   public type: number;
   public activityType;
@@ -63,6 +64,43 @@ export class MainComponent implements OnInit {
 
     this.activityService.submitAnswer(postBody)
       .subscribe((response: any) => {
+        this.answerIsCorrect = response.isCorrectAnswer
+      }, error => {
+        console.log('error', error);
+      })
+  }
+
+  public onKeydown(e) {
+    if (!(this.type === this.activityType.GUI)) return;
+
+    this.keydownEvents.push(e.which || e.keyCode || 0);
+    if (!(this.keydownEvents.length === this.activity.faux.length)) return;
+    const correctKeys = [];
+
+    this.keydownEvents.forEach((code, idx) => {
+      if ((this.activity.faux[idx] / 2) === code) {
+        correctKeys.push(code);
+      }
+    });
+
+    console.log(`${correctKeys.length} === ${this.activity.faux.length}`)
+    if (!(correctKeys.length === this.activity.faux.length)) {
+      this.keydownEvents = [];
+      return;
+    }
+
+    const postBody = {
+      participantId: this.participantId,
+      participantActivityId: this.activity._id,
+      answer: correctKeys,
+    };
+
+    this.activityService.submitKeys(postBody)
+      .subscribe((response: any) => {
+        if (!response.isCorrectAnswer) {
+          this.keydownEvents = [];
+          return;
+        }
         this.answerIsCorrect = response.isCorrectAnswer
       }, error => {
         console.log('error', error);

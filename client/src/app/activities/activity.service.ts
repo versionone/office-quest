@@ -11,6 +11,7 @@ export class ActivityService {
 
   private readonly currentActivityUrl: string;
   private readonly submitAnswerUrl: string;
+  private readonly submitKeysUrl: string;
   private readonly headers: object;
 
   constructor(
@@ -19,6 +20,7 @@ export class ActivityService {
     ) {
     this.currentActivityUrl = this.configService.getApiBaseUrl().concat('activity/current');
     this.submitAnswerUrl = this.configService.getApiBaseUrl().concat('activity/submitAnswer');
+    this.submitKeysUrl = this.configService.getApiBaseUrl().concat('activity/submitKeys');
     this.headers = this.configService.getApiRequestHeaders();
   }
 
@@ -28,5 +30,9 @@ export class ActivityService {
 
   public submitAnswer(postBody: { participantId: string; participantActivityId: string; answer: string }) {
     return this.http.post(this.submitAnswerUrl, postBody, this.headers)
+  }
+
+  public submitKeys(postBody: { participantId: string; participantActivityId: string; answer: any }) {
+    return this.http.post(this.submitKeysUrl, postBody, this.headers)
   }
 }

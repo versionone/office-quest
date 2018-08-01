@@ -8,6 +8,7 @@ export class Activity {
   completion_type: CompletionType;
   message: string;
   answer: any;
+  faux: any;
   email: Email;
 }
 

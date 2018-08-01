@@ -143,6 +143,7 @@ app.get('/activity/current', (req, res) => {
         _id: 1,
         type : 1,
         message : 1,
+        faux: 1,
     };
 
     db.collection('participant_activity').findOne(participantActivityQuery, {projection: participantActivityProjection}).then((doc) => {
@@ -156,6 +157,39 @@ app.post('/activity/submitAnswer', (req, res) => {
             if (req.body.answer.toLowerCase() === doc.answer.toLowerCase())
                 db.collection('participant_activity').updateOne({_id: ObjectId(req.body.participantActivityId)}, {$set: {state: ActivityState.COMPLETE}}).then(() => {
                     console.log(`Updated participant activity '${req.body.participantActivityId}' state to COMPLETE`);
+                    const participantActivityUpdateFilter = {
+                        participant_id: req.body.participantId,
+                        state: ActivityState.FUTURE,
+                    };
+
+                    db.collection('participant_activity').updateOne(participantActivityUpdateFilter, {$set: {state: ActivityState.STAGED}}).then((doc) => {
+                        console.log(`Updated next participant activity state to STAGED for participant '${req.body.participantId}'`);
+                    }).catch(err => { throw err; });
+
+                    res.json({isCorrectAnswer: true});
+                }).catch(err => { throw err; });
+            else {
+                res.json({isCorrectAnswer: false});
+            }
+        } else {
+            throw new Error(`A participantActivity with _id '${req.body.participantActivityId}' was not found`);
+        }
+    }).catch(err => { throw err; });
+});
+
+app.post('/activity/submitKeys', (req, res) => {
+    db.collection('participant_activity').findOne({_id: ObjectId(req.body.participantActivityId)}, {projection: {answer: 1}}).then((doc) => {
+        if (doc) {
+            const correctKeys = [];
+
+            req.body.answer.forEach((code, idx) => {
+                if (doc.answer[idx] === code) {
+                    correctKeys.push(code);
+                }
+            });
+
+            if (correctKeys.length === doc.answer.length)
+                db.collection('participant_activity').updateOne({_id: ObjectId(req.body.participantActivityId)}, {$set: {state: ActivityState.COMPLETE}}).then(() => {
                     const participantActivityUpdateFilter = {
                         participant_id: req.body.participantId,
                         state: ActivityState.FUTURE,

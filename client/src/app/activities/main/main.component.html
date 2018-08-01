@@ -1,7 +1,7 @@
 <div *ngIf="activity">
   <div [innerHtml]="activity.message | safeHtml"></div>
 
-  <div *ngIf="type==activityType.GUI">
+  <div *ngIf="type==activityType.GUI" (keydown)="onKeydown($event)" tabindex="1" style="position: absolute; top: 0; left: 0; width: 2000px; height: 2000px">
   </div>
 
   <div *ngIf="type==activityType.Online">
@@ -13,9 +13,9 @@
     </label>
     <button (click)="onSubmitClick()">Submit</button>
     <div *ngIf="inputIsValid == false" class="error">You must enter an answer to submit</div>
-    <div *ngIf="answerIsCorrect == false" class="error">Your answer is incorrect, please try again</div>
-    <div *ngIf="answerIsCorrect == true" class="success">Congratulations, you have completed this activity! We'll send you an email when your next activity is ready.</div>
   </div>
+  <div *ngIf="answerIsCorrect == false" class="error">Your answer is incorrect, please try again</div>
+  <div *ngIf="answerIsCorrect == true" class="success">Congratulations, you have completed this activity! We'll send you an email when your next activity is ready.</div>
 </div>
 
 <div *ngIf="!activity">
