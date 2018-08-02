@@ -1,7 +1,7 @@
 <div *ngIf="activity">
   <div [innerHtml]="activity.message | safeHtml"></div>
 
-  <div *ngIf="type==activityType.GUI" (keydown)="onKeydown($event)" tabindex="1" style="position: absolute; top: 0; left: 0; width: 2000px; height: 2000px">
+  <div *ngIf="type==activityType.GUI" id="keyReceiver" (keydown)="onKeydown($event)" tabindex="1" style="position: absolute; top: 0; left: 0; width: 2000px; height: 2000px">
   </div>
 
   <div *ngIf="type==activityType.Online">

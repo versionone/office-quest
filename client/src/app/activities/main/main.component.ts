@@ -47,6 +47,13 @@ export class MainComponent implements OnInit {
       );
   }
 
+  ngAfterViewChecked() {
+      const elm = document.getElementById('keyReceiver');
+    if (elm) {
+      elm.focus();
+    }
+  }
+
   private isInputValid() {
     return !!this.answer;
   }
@@ -83,7 +90,6 @@ export class MainComponent implements OnInit {
       }
     });
 
-    console.log(`${correctKeys.length} === ${this.activity.faux.length}`)
     if (!(correctKeys.length === this.activity.faux.length)) {
       this.keydownEvents = [];
       return;
