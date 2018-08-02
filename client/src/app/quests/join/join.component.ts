@@ -16,6 +16,7 @@ import { Quest } from '../quest';
 export class JoinComponent implements OnInit {
 
   public quests: Quest[];
+  public selectedQuestId: string;
   public name: string = '';
   public email: string = '';
   public inputIsValid?: boolean = null;
@@ -32,9 +33,19 @@ export class JoinComponent implements OnInit {
       });
   }
 
+/*
   private isInputValid() {
     return !!this.name &&
       (!!this.email && this.email.toLowerCase().includes('@collab.net') && this.email.length > 11);
+  }
+*/
+
+  private isInputValid() {
+    return !!this.name && !!this.email;
+  }
+
+  public onQuestClick(questId) {
+    this.selectedQuestId = questId;
   }
 
   public onJoinClick() {
@@ -42,7 +53,7 @@ export class JoinComponent implements OnInit {
     if (!this.inputIsValid) return;
 
     const postBody = {
-      questId: this.quests[0]._id,
+      questId: this.selectedQuestId,
       name: this.name,
       email: this.email,
     };

@@ -1,0 +1,12 @@
+ul {
+  list-style: none;
+}
+
+li {
+  padding: 10px 0;
+  border: 1px solid black;
+}
+
+li.selected {
+  background-color: lightgray;
+}

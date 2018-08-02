@@ -1,5 +1,9 @@
 <div>
   <h1>Join the Quest</h1>
+  <h4>You must choose, choose wisely.</h4>
+  <ul>
+    <li *ngFor="let quest of quests" (click)="onQuestClick(quest._id)" [class.selected]="selectedQuestId === quest._id">{{quest.name}}</li>
+  </ul>
   <div>
     <label>Name:
       <input [(ngModel)]="name" type="text" placeholder="name">
