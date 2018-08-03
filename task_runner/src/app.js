@@ -5,7 +5,7 @@ const attachmentFilePath = 'C:\\Temp\\';
 
 const MongoClient = require('mongodb').MongoClient;
 const ObjectId = require('mongodb').ObjectId;
-const mongodbUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/office_quest';
+const mongodbUri = process.env.MONGODB_URI || 'mongodb://test:Password1.@ds159641.mlab.com:59641/office_quest';
 
 const ActivityState = {
     FUTURE: 0,
