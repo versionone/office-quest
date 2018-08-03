@@ -1,19 +1,23 @@
-<div>
-  <h1>Join the Quest</h1>
-  <h4>You must choose, choose wisely.</h4>
+<div class="mainBG">
+  <h1>Shall we play a game?</h1>
   <ul>
     <li *ngFor="let quest of quests" (click)="onQuestClick(quest._id)" [class.selected]="selectedQuestId === quest._id">{{quest.name}}</li>
   </ul>
-  <div>
-    <label>Name:
-      <input [(ngModel)]="name" type="text" placeholder="name">
-    </label>
+  <div class="entryForm">
+    <div class="field">
+      <label>Name:
+        <input [(ngModel)]="name" type="text" placeholder="name">
+      </label>
+    </div>
+    <div class="field">
+      <label>Email:
+        <input [(ngModel)]="email" type="text" placeholder="email">
+      </label>
+    </div>
+    <button (click)="onJoinClick()">Join</button>
+    <div *ngIf="inputIsValid == false" class="error">You must provide your name and a valid CollabNet email to join</div>
   </div>
-  <div>
-    <label>Email:
-      <input [(ngModel)]="email" type="text" placeholder="email">
-    </label>
+  <div class="hackweekLogo">
+    <img src="../assets/images/HackWeek2018.png" />
   </div>
-  <button (click)="onJoinClick()">Join</button>
-  <div *ngIf="inputIsValid == false" class="error">You must provide your name and a valid CollabNet email to join</div>
 </div>
