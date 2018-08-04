@@ -20,7 +20,8 @@ export class MainComponent implements OnInit {
 
   private readonly participantId: string;
   private keydownEvents = [];
-  public activity: Activity;
+  public currentActivity: Activity;
+  public nextActivity: Activity;
   public type: number;
   public activityType;
   public answer: string;
@@ -37,10 +38,20 @@ export class MainComponent implements OnInit {
 
   ngOnInit() {
     this.activityService.getCurrentActivity(this.participantId)
-      .subscribe((activity) => {
-        if (!activity) return;
-        this.activity = activity as Activity;
-        this.type = this.activity.type;
+      .subscribe((currentActivity) => {
+        if (currentActivity) {
+          this.currentActivity = currentActivity as Activity;
+          this.type = this.currentActivity.type;
+        } else {
+          this.activityService.getNextActivity(this.participantId)
+            .subscribe((nextActivity) => {
+              if (!nextActivity) return;
+              this.nextActivity = nextActivity as Activity;
+              },error => {
+                console.log('error', error)
+              }
+            )
+        }
       },error => {
           console.log('error', error)
         }
@@ -65,7 +76,7 @@ export class MainComponent implements OnInit {
 
     const postBody = {
       participantId: this.participantId,
-      participantActivityId: this.activity._id,
+      participantActivityId: this.currentActivity._id,
       answer: this.answer,
     };
 
@@ -81,23 +92,23 @@ export class MainComponent implements OnInit {
     if (!(this.type === this.activityType.GUI)) return;
 
     this.keydownEvents.push(e.which || e.keyCode || 0);
-    if (!(this.keydownEvents.length === this.activity.faux.length)) return;
+    if (!(this.keydownEvents.length === this.currentActivity.faux.length)) return;
     const correctKeys = [];
 
     this.keydownEvents.forEach((code, idx) => {
-      if ((this.activity.faux[idx] / 2) === code) {
+      if ((this.currentActivity.faux[idx] / 2) === code) {
         correctKeys.push(code);
       }
     });
 
-    if (!(correctKeys.length === this.activity.faux.length)) {
+    if (!(correctKeys.length === this.currentActivity.faux.length)) {
       this.keydownEvents = [];
       return;
     }
 
     const postBody = {
       participantId: this.participantId,
-      participantActivityId: this.activity._id,
+      participantActivityId: this.currentActivity._id,
       answer: correctKeys,
     };
 

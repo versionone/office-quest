@@ -1,5 +1,5 @@
-<div *ngIf="activity">
-  <div [innerHtml]="activity.message | safeHtml"></div>
+<div *ngIf="currentActivity">
+  <div [innerHtml]="currentActivity.message | safeHtml"></div>
 
   <div *ngIf="type==activityType.GUI" id="keyReceiver" (keydown)="onKeydown($event)" tabindex="1" style="position: absolute; top: 0; left: 0; width: 2000px; height: 2000px">
   </div>
@@ -18,6 +18,11 @@
   <div *ngIf="answerIsCorrect == true" class="success">Congratulations, you have completed this activity! We'll send you an email when your next activity is ready.</div>
 </div>
 
-<div *ngIf="!activity">
-  No activity available
+<div *ngIf="!currentActivity">
+  <div *ngIf="nextActivity">
+    <div class="next-activity">Your next activity is scheduled for {{nextActivity.start_datetime | date:'M/d/yy, H:mm'}}</div>
+  </div>
+  <div *ngIf="!currentActivity && !nextActivity">
+    <div class="no-activity">You have no scheduled activities</div>
+  </div>
 </div>

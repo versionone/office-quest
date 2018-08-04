@@ -151,6 +151,22 @@ app.get('/activity/current', (req, res) => {
     }).catch(err => { throw err; });
 });
 
+app.get('/activity/next', (req, res) => {
+    const participantActivityQuery = {
+        participant_id: req.query.participantId,
+        state: ActivityState.STAGED,
+    };
+
+    const participantActivityProjection = {
+        _id: 0,
+        start_datetime : 1,
+    };
+
+    db.collection('participant_activity').findOne(participantActivityQuery, {projection: participantActivityProjection}).then((doc) => {
+        res.json(doc);
+    }).catch(err => { throw err; });
+});
+
 app.post('/activity/submitAnswer', (req, res) => {
     db.collection('participant_activity').findOne({_id: ObjectId(req.body.participantActivityId)}, {projection: {answer: 1}}).then((doc) => {
         if (doc) {
