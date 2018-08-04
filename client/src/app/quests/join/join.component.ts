@@ -33,15 +33,9 @@ export class JoinComponent implements OnInit {
       });
   }
 
-/*
   private isInputValid() {
-    return !!this.name &&
+    return !!this.selectedQuestId && !!this.name &&
       (!!this.email && this.email.toLowerCase().includes('@collab.net') && this.email.length > 11);
-  }
-*/
-
-  private isInputValid() {
-    return !!this.name && !!this.email;
   }
 
   public onQuestClick(questId) {
