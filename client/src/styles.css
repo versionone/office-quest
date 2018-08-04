@@ -110,3 +110,17 @@ h1 {
   color: #f34444;
   padding: 2em 0 1em 0;
 }
+
+li {
+  background-color: white;
+}
+
+.next-activity, .no-activity {
+  font-family: 'pcap_terminalbold';
+  color: #fafafa;
+  letter-spacing: 6px;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+}
