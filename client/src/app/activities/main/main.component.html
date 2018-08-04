@@ -1,5 +1,5 @@
-<div *ngIf="currentActivity">
-  <div [innerHtml]="currentActivity.message | safeHtml"></div>
+<div *ngIf="currentActivity" class="main">
+  <div class="activity-message" [innerHtml]="currentActivity.message | safeHtml"></div>
 
   <div *ngIf="type==activityType.GUI" id="keyReceiver" (keydown)="onKeydown($event)" tabindex="1" style="position: absolute; top: 0; left: 0; width: 2000px; height: 2000px">
   </div>
@@ -7,7 +7,7 @@
   <div *ngIf="type==activityType.Online">
   </div>
 
-  <div *ngIf="type==activityType.Scramble || type==activityType.Hunt">
+  <div class="field component" *ngIf="type==activityType.Scramble || type==activityType.Hunt">
     <label>Answer:
       <input [(ngModel)]="answer" type="text" placeholder="enter your answer">
     </label>

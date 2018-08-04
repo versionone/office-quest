@@ -22,12 +22,113 @@ h1 {
   margin-top: 2em;
 }
 
+.regionSelector {
+    display: flex;
+    margin: .7em 0 0 0;
+    padding: 0;
+    width: 75%;
+}
+
+.regionSelector li {
+    background-color: #190a1c;
+    border: 0;
+	width: 50%;
+	text-align: center;
+	cursor: pointer;
+}
+
+.regionSelector .selected {
+	background-color: #7DB1FC !important;
+	color: #333;
+}
+
+.regionSelector li:nth-child(1) {
+	border-radius: 25px 0px 0px 25px;
+}
+
+
+.regionSelector li:nth-child(2) {
+	border-radius: 0px 25px 25px 0px;
+}
+
+.main {
+  box-shadow: 0px 0px 22px #002dd3;
+  display: flex;
+  margin: 4em auto;
+  flex-direction: column;
+  padding: 3em;
+  max-width: 40%;
+  background-color:rgba(0, 0, 0, 0.7);
+  text-align: left;
+  color: #a3aac4;
+  font-family: "Lucida Console", Monaco, monospace;
+}
+
+.main .field {
+  padding: 1em 0;
+}
+
+.main .component {
+	display: flex;
+    padding: 1em 0;
+    flex-direction: column;	
+}
+
+.main .component button {
+	margin-top: 1em;
+    font-size: 17px;
+    padding: .4em 0;
+    width: 160px !important;
+}
+
+.main .field label {
+  display: flex;
+  flex-direction: column;
+}
+
+.main .field label input {
+  padding: 1em 0;
+  background-color: transparent;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: thin #292e42 solid;
+  color: #fff;
+  font-family: "Lucida Console", Monaco, monospace;
+  font-size: 20px;
+  outline: none;
+}
+
+.main button {
+  cursor: pointer;
+  outline: 0;
+  font-family: "Lucida Console", Monaco, monospace;
+  font-size: 18px;
+  border-radius: 25px;
+  padding: .7em 0;
+  color: #fff;
+  border: 0;
+  width: 190px !important;
+  text-align: center;
+  margin: 0 auto;
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#4500d1+0,f60efe+100 */
+  background: #4500d1; /* Old browsers */
+  background: -moz-linear-gradient(-45deg, #4500d1 0%, #f60efe 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(-45deg, #4500d1 0%,#f60efe 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(135deg, #4500d1 0%,#f60efe 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4500d1', endColorstr='#f60efe',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+}
+
+.main a {
+	color: #6fa6ff;
+}
+
 .entryForm {
   box-shadow: 0px 0px 22px #002dd3;
   display: flex;
   margin: 2em auto;
   flex-direction: column;
-  padding: 2em;
+  padding: 3em;
   max-width: 40%;
   background-color:rgba(0, 0, 0, 0.7);
   text-align: left;
@@ -37,6 +138,19 @@ h1 {
 
 .entryForm .field {
   padding: 1em 0;
+}
+
+.entryForm .component {
+	display: flex;
+    padding: 1em 0;
+    flex-direction: column;	
+}
+
+.entryForm .component button {
+	margin-top: 1em;
+    font-size: 17px;
+    padding: .4em 0;
+    width: 160px !important;
 }
 
 .entryForm .field label {
@@ -104,20 +218,34 @@ h1 {
 
 .success {
   color: #44f386;
+  font-family: "Lucida Console", Monaco, monospace;
+  margin-top: 1em;
 }
 
 .error {
   color: #f34444;
   padding: 2em 0 1em 0;
+  font-family: "Lucida Console", Monaco, monospace;
+  margin-top: 1em;
 }
 
 li {
   background-color: white;
 }
 
+.activity-message {
+  font-family: "Lucida Console", Monaco, monospace;
+  color: #a3aac4;
+  line-height: 22px;
+ }
+
+
+
 .next-activity, .no-activity {
-  font-family: 'pcap_terminalbold';
-  color: #fafafa;
+  font-family: "Lucida Console", Monaco, monospace;
+  font-size: 26px;
+  font-weight: bold;
+  color: #a3aac4;
   letter-spacing: 6px;
   position: absolute;
   top: 50%;
