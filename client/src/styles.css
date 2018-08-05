@@ -52,6 +52,7 @@ h1 {
 }
 
 .main {
+  border-radius: 35px;
   box-shadow: 0px 0px 22px #002dd3;
   display: flex;
   margin: 4em auto;
@@ -124,6 +125,7 @@ h1 {
 }
 
 .entryForm {
+  border-radius: 35px;
   box-shadow: 0px 0px 22px #002dd3;
   display: flex;
   margin: 2em auto;
@@ -239,15 +241,28 @@ li {
   line-height: 22px;
  }
 
+.activity-container {
+
+}
+
+.no-activity-container {
+  margin: 3em auto;
+  text-align: center;
+}
+
+.no-activity-image, .activity-image {
+  margin-top: 1em;
+}
+
+.no-activity-image img, .activity-image img {
+  height: 150px;
+}
+
 .next-activity, .no-activity {
+  padding: 1em;
   font-family: "Lucida Console", Monaco, monospace;
-  font-size: 26px;
-  font-weight: bold;
+  font-size: 20px;
   color: #a3aac4;
-  letter-spacing: 6px;
-  position: absolute;
-  top: 50%;
-  left: 0;
   width: 100%;
 }
 

@@ -31,10 +31,15 @@
 </div>
 
 <div *ngIf="!currentActivity">
-  <div *ngIf="nextActivity">
+  <div *ngIf="nextActivity" class="activity-container main">
+    <div class="activity-image"><img src="assets/images/activities.png" /></div>
     <div class="next-activity">Your next activity is scheduled for {{nextActivity.start_datetime | date:'M/d/yy H:mm'}}</div>
   </div>
-  <div *ngIf="!currentActivity && !nextActivity">
+  <div *ngIf="!currentActivity && !nextActivity" class="no-activity-container main">
+    <div class="no-activity-image"><img src="assets/images/no-activities.png" /></div>
     <div class="no-activity">You have no scheduled activities</div>
   </div>
+</div>
+<div class="hackweekLogo">
+  <img src="../assets/images/HackWeek2018.png" />
 </div>
