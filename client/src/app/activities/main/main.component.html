@@ -1,21 +1,33 @@
 <div *ngIf="currentActivity" class="main">
   <div class="activity-message" [innerHtml]="currentActivity.message | safeHtml"></div>
 
-  <div *ngIf="type==activityType.GUI" id="keyReceiver" (keydown)="onKeydown($event)" tabindex="1" style="position: absolute; top: 0; left: 0; width: 2000px; height: 2000px">
+  <div *ngIf="type==activityType.GUI" id="keyReceiver" class="component" (keydown)="onKeydown($event)" tabindex="1">
+    <div *ngIf="answerIsCorrect == false" class="error">Your answer is incorrect, please try again</div>
+    <div *ngIf="answerIsCorrect == true" class="success">Congratulations, you have completed this activity! We'll send you an email when your next activity is ready.</div>
   </div>
 
   <div *ngIf="type==activityType.Online">
   </div>
 
-  <div class="field component" *ngIf="type==activityType.Scramble || type==activityType.Hunt">
+  <div *ngIf="type==activityType.Scramble || type==activityType.Hunt" class="field component">
     <label>Answer:
       <input [(ngModel)]="answer" type="text" placeholder="enter your answer">
     </label>
     <button (click)="onSubmitClick()">Submit</button>
     <div *ngIf="inputIsValid == false" class="error">You must enter an answer to submit</div>
+    <div *ngIf="answerIsCorrect == false" class="error">Your answer is incorrect, please try again</div>
+    <div *ngIf="answerIsCorrect == true" class="success">Congratulations, you have completed this activity! We'll send you an email when your next activity is ready.</div>
   </div>
-  <div *ngIf="answerIsCorrect == false" class="error">Your answer is incorrect, please try again</div>
-  <div *ngIf="answerIsCorrect == true" class="success">Congratulations, you have completed this activity! We'll send you an email when your next activity is ready.</div>
+
+  <div *ngIf="type==activityType.Trivia" class="component">
+    <div *ngFor="let choice of currentActivity.choices">
+      {{choice.option}}: {{choice.value}}
+    </div>
+    <button (click)="onSubmitClick()">Submit</button>
+    <div *ngIf="inputIsValid == false" class="error">You must enter an answer to submit</div>
+    <div *ngIf="answerIsCorrect == false" class="error">Your answer is incorrect, please try again</div>
+    <div *ngIf="answerIsCorrect == true" class="success">Congratulations, you have completed this activity! We'll send you an email when your next activity is ready.</div>
+  </div>
 </div>
 
 <div *ngIf="!currentActivity">
