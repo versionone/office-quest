@@ -59,7 +59,7 @@ export class MainComponent implements OnInit {
   }
 
   ngAfterViewChecked() {
-      const elm = document.getElementById('keyReceiver');
+    const elm = document.getElementById('keyReceiver');
     if (elm) {
       elm.focus();
     }
