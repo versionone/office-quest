@@ -9,12 +9,12 @@
   </div>
     <div class="field">
       <label>Name:
-        <input [(ngModel)]="name" type="text" placeholder="name">
+        <input [(ngModel)]="name" id="nameInput" type="text" tabindex="0">
       </label>
     </div>
     <div class="field">
       <label>Email:
-        <input [(ngModel)]="email" type="text" placeholder="email">
+        <input [(ngModel)]="email" id="emailInput" type="text" tabindex="0">
       </label>
     </div>
     <button (click)="onJoinClick()">Join</button>

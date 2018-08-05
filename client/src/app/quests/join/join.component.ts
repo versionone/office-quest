@@ -40,6 +40,17 @@ export class JoinComponent implements OnInit {
 
   public onQuestClick(questId) {
     this.selectedQuestId = questId;
+
+    let elm = document.getElementById('nameInput');
+    if (!elm.value) {
+      elm.focus();
+      return;
+    }
+
+    elm = document.getElementById('emailInput');
+    if (!elm.value) {
+      elm.focus();
+    }
   }
 
   public onJoinClick() {
