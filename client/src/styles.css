@@ -23,15 +23,15 @@ h1 {
 }
 
 .regionSelector {
-    display: flex;
-    margin: .7em 0 0 0;
-    padding: 0;
-    width: 75%;
+  display: flex;
+  margin: .7em 0 0 0;
+  padding: 0;
+  width: 75%;
 }
 
 .regionSelector li {
-    background-color: #190a1c;
-    border: 0;
+  background-color: #190a1c;
+  border: 0;
 	width: 50%;
 	text-align: center;
 	cursor: pointer;
@@ -69,16 +69,16 @@ h1 {
 }
 
 .main .component {
-	display: flex;
-    padding: 1em 0;
-    flex-direction: column;	
+  display: flex;
+  padding: 1em 0;
+  flex-direction: column;
 }
 
 .main .component button {
 	margin-top: 1em;
-    font-size: 17px;
-    padding: .4em 0;
-    width: 160px !important;
+  font-size: 17px;
+  padding: .4em 0;
+  width: 160px !important;
 }
 
 .main .field label {
@@ -142,15 +142,15 @@ h1 {
 
 .entryForm .component {
 	display: flex;
-    padding: 1em 0;
-    flex-direction: column;	
+  padding: 1em 0;
+  flex-direction: column;
 }
 
 .entryForm .component button {
 	margin-top: 1em;
-    font-size: 17px;
-    padding: .4em 0;
-    width: 160px !important;
+  font-size: 17px;
+  padding: .4em 0;
+  width: 160px !important;
 }
 
 .entryForm .field label {
@@ -239,8 +239,6 @@ li {
   line-height: 22px;
  }
 
-
-
 .next-activity, .no-activity {
   font-family: "Lucida Console", Monaco, monospace;
   font-size: 26px;
@@ -251,4 +249,14 @@ li {
   top: 50%;
   left: 0;
   width: 100%;
+}
+
+#keyReceiver {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 650px;
+  height: 650px;
+  box-shadow: none;
+  outline: none;
 }
