@@ -1,12 +1,12 @@
 <div class="mainBG">
   <h1>Shall we play a game?</h1>
   <div class="entryForm">
-  <div class="field">
-    <label>Please select the quest you would like to join.</label>
-    <ul class="regionSelector">
-      <li *ngFor="let quest of quests" (click)="onQuestClick(quest._id)" [class.selected]="selectedQuestId === quest._id">{{quest.name}}</li>
-    </ul>
-  </div>
+    <div class="field">
+      <label>Please select the quest you would like to join.</label>
+      <ul class="regionSelector">
+        <li *ngFor="let quest of quests" (click)="onQuestClick(quest._id)" [class.selected]="selectedQuestId === quest._id">{{quest.name}}</li>
+      </ul>
+    </div>
     <div class="field">
       <label>Name:
         <input [(ngModel)]="name" id="nameInput" type="text" tabindex="0">
