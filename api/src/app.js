@@ -116,7 +116,6 @@ app.post('/quest/join', (req, res) => {
                                 email: {
                                     ...activity.email
                                 },
-                                choices: Object.assign(...activity.choices || {}),
                             }
                         });
                         activities[0].state = ActivityState.STAGED;
