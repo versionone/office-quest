@@ -1,6 +1,5 @@
 const nodemailer = require('nodemailer');
 const log = require('simple-node-logger').createSimpleFileLogger('task_runner.log');
-const log = require('simple-node-logger').createSimpleFileLogger('api.log');
 const emailUser = process.env.EMAIL_USER || 'user';
 const emailPass = process.env.EMAIL_PASS || 'pass';
 const attachmentFilePath = 'C:\\Temp\\';
