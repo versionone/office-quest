@@ -119,7 +119,7 @@ app.post('/quest/join', (req, res) => {
                                 choices: Object.assign(...activity.choices || {}),
                             }
                         });
-                        activities[0].state = ActivityState.STAGED  ;
+                        activities[0].state = ActivityState.STAGED;
 
                         db.collection('participant_activity').insertMany(activities).then(insertResult => {
                             console.log(`'${insertResult.insertedCount}' participant activities were created, return participant _id '${newParticipant._id}'`);
