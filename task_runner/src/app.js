@@ -74,7 +74,7 @@ const app = {
                                 state: ActivityState.FUTURE,
                             };
 
-                            db.collection('participant_activity').updateOne(participantActivityUpdateFilter, {$set: {state: ActivityState.STAGED}}).then((doc) => {
+                            db.collection('participant_activity').updateOne(participantActivityUpdateFilter, {$set: {state: ActivityState.STAGED}}).then(() => {
                                 log.info(`Updated next participant activity state to STAGED for participant '${doc.participant_id}'`);
                             }).catch(err => { throw err; });
                         }).catch(err => {
