@@ -57,16 +57,12 @@ h1 {
   display: flex;
   margin: 4em auto;
   flex-direction: column;
-  padding: 3em;
+  padding: 2em 3em 3em 3em;
   max-width: 40%;
   background-color:rgba(0, 0, 0, 0.7);
   text-align: left;
   color: #a3aac4;
   font-family: "Lucida Console", Monaco, monospace;
-}
-
-.main .field {
-  padding: 1em 0;
 }
 
 .main .component {
@@ -82,12 +78,13 @@ h1 {
   width: 160px !important;
 }
 
-.main .field label {
+.main label {
   display: flex;
   flex-direction: column;
+  padding: 2em 0;
 }
 
-.main .field label input {
+.main label input {
   padding: 1em 0;
   background-color: transparent;
   border-top: 0;
@@ -104,15 +101,15 @@ h1 {
   cursor: pointer;
   outline: 0;
   font-family: "Lucida Console", Monaco, monospace;
-  font-size: 18px;
+  font-size: 16px;
   border-radius: 25px;
   padding: .7em 0;
   color: #fff;
   border: 0;
-  width: 190px !important;
-  text-align: center;
+  width: 160px !important;
+  text-align: center !important;
   margin: 0 auto;
-  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#4500d1+0,f60efe+100 */
+  display: block;
   background: #4500d1; /* Old browsers */
   background: -moz-linear-gradient(-45deg, #4500d1 0%, #f60efe 100%); /* FF3.6-15 */
   background: -webkit-linear-gradient(-45deg, #4500d1 0%,#f60efe 100%); /* Chrome10-25,Safari5.1-6 */
@@ -138,14 +135,14 @@ h1 {
   font-family: "Lucida Console", Monaco, monospace;
 }
 
-.entryForm .field {
-  padding: 1em 0;
-}
-
 .entryForm .component {
 	display: flex;
   padding: 1em 0;
   flex-direction: column;
+}
+
+.entryForm .field {
+  padding: 1em 0;
 }
 
 .entryForm .component button {
@@ -242,7 +239,8 @@ li {
  }
 
 .activity-container {
-
+  margin: 3em auto;
+  text-align: center;
 }
 
 .no-activity-container {
@@ -250,12 +248,13 @@ li {
   text-align: center;
 }
 
-.no-activity-image, .activity-image {
-  margin-top: 1em;
+.no-activity-image, .activity-image, .quest-image {
+  margin: 1em auto;
+  text-align: center;
 }
 
-.no-activity-image img, .activity-image img {
-  height: 150px;
+.no-activity-image img, .activity-image img, .quest-image img {
+  height: 175px;
 }
 
 .next-activity, .no-activity {
@@ -267,22 +266,24 @@ li {
 }
 
 #keyReceiver {
-  position: absolute;
+  position: relative;
   top: 0;
   left: 0;
-  width: 650px;
-  height: 650px;
   box-shadow: none;
   outline: none;
 }
 
 .choice {
   padding: 20px;
-  margin: 10px 0;
+  margin: 20px 0;
   border-radius: 35px;
   box-shadow: 0px 0px 22px #002dd3;
 }
 
 .choice.selected {
   box-shadow: 0px 0px 22px #44f386;
+}
+
+.choice-container {
+  margin-top: 20px;
 }

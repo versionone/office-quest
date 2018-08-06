@@ -1,15 +1,19 @@
 <div *ngIf="currentActivity" class="main">
-  <div class="activity-message" [innerHtml]="currentActivity.message | safeHtml"></div>
-
   <div *ngIf="type==activityType.GUI" class="component">
+    <div class="quest-image"><img src="assets/images/quest-keyboard.png" /></div>
+    <div class="activity-message" [innerHtml]="currentActivity.message | safeHtml"></div>
     <div id="keyReceiver" (keydown)="onKeydown($event)" tabindex="1"></div>
     <div *ngIf="answerIsCorrect == true" class="success">Congratulations, you have completed this activity! We'll send you an email when your next activity is ready.</div>
   </div>
 
   <div *ngIf="type==activityType.Online">
+    <div class="quest-image"><img src="assets/images/quest-map.png" /></div>
+    <div class="activity-message" [innerHtml]="currentActivity.message | safeHtml"></div>
   </div>
 
-  <div *ngIf="type==activityType.Scramble || type==activityType.Hunt" class="field component">
+  <div *ngIf="type==activityType.Scramble || type==activityType.Hunt" class="component">
+    <div class="quest-image"><img src="assets/images/quest-word-search.png" /></div>
+    <div class="activity-message" [innerHtml]="currentActivity.message | safeHtml"></div>
     <label>Answer:
       <input [(ngModel)]="answer" type="text" placeholder="enter your answer">
     </label>
@@ -20,8 +24,12 @@
   </div>
 
   <div *ngIf="type==activityType.Trivia" class="component">
-    <div *ngFor="let choice of currentActivity.choices" (click)="onChoiceClick(choice.option)" [class.selected]="answer === choice.option" class="choice">
-      {{choice.option}}: {{choice.value}}
+    <div class="quest-image"><img src="assets/images/quest-trivia.png" /></div>
+    <div class="activity-message" [innerHtml]="currentActivity.message | safeHtml"></div>
+    <div class="choice-container">
+      <div *ngFor="let choice of currentActivity.choices" (click)="onChoiceClick(choice.option)" [class.selected]="answer === choice.option" class="choice">
+        {{choice.option}}: {{choice.value}}
+      </div>
     </div>
     <button (click)="onSubmitClick()">Submit</button>
     <div *ngIf="inputIsValid == false" class="error">You must choose one of the options to submit</div>
@@ -30,12 +38,12 @@
   </div>
 </div>
 
-<div *ngIf="!currentActivity">
-  <div *ngIf="nextActivity" class="activity-container main">
+<div *ngIf="!currentActivity" class="main">
+  <div *ngIf="nextActivity" class="activity-container">
     <div class="activity-image"><img src="assets/images/activities.png" /></div>
     <div class="next-activity">Your next activity is scheduled for {{nextActivity.start_datetime | date:'M/d/yy H:mm'}}</div>
   </div>
-  <div *ngIf="!currentActivity && !nextActivity" class="no-activity-container main">
+  <div *ngIf="!currentActivity && !nextActivity" class="no-activity-container">
     <div class="no-activity-image"><img src="assets/images/no-activities.png" /></div>
     <div class="no-activity">You have no activities scheduled at this time</div>
   </div>
