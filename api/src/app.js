@@ -105,7 +105,7 @@ app.post('/quest/join', (req, res) => {
                 db.collection('quest').findOne(questQuery, {projection: questProjection}).then(doc => {
                     if (doc) {
                         const activities = doc.activities.map(activity => {
-                            activity.email.message = activity.email.message.replace('{{app_url}}', doc.app_url);
+                            if (activity.email) activity.email.message = activity.email.message.replace('{{app_url}}', doc.app_url);
                             return {
                                 quest_id: doc._id.toString(),
                                 participant_id: newParticipant._id.toString(),
@@ -116,6 +116,7 @@ app.post('/quest/join', (req, res) => {
                                 email: {
                                     ...activity.email
                                 },
+                                choices: Object.assign(...activity.choices || {}),
                             }
                         });
                         activities[0].state = ActivityState.STAGED  ;
