@@ -1,8 +1,8 @@
 <div *ngIf="currentActivity" class="main">
   <div class="activity-message" [innerHtml]="currentActivity.message | safeHtml"></div>
 
-  <div *ngIf="type==activityType.GUI" id="keyReceiver" class="component" (keydown)="onKeydown($event)" tabindex="1">
-    <div *ngIf="answerIsCorrect == false" class="error">Your answer is incorrect, please try again</div>
+  <div *ngIf="type==activityType.GUI" class="component">
+    <div id="keyReceiver" (keydown)="onKeydown($event)" tabindex="1"></div>
     <div *ngIf="answerIsCorrect == true" class="success">Congratulations, you have completed this activity! We'll send you an email when your next activity is ready.</div>
   </div>
 
