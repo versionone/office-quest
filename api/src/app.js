@@ -170,7 +170,7 @@ app.get('/activity/next', (req, res) => {
 app.post('/activity/submitAnswer', (req, res) => {
     db.collection('participant_activity').findOne({_id: ObjectId(req.body.participantActivityId)}, {projection: {answer: 1}}).then((doc) => {
         if (doc) {
-            if (req.body.answer.toLowerCase() === doc.answer.toLowerCase())
+            if (req.body.answer.toLowerCase() === doc.answer.toLowerCase()) {
                 db.collection('participant_activity').updateOne({_id: ObjectId(req.body.participantActivityId)}, {$set: {state: ActivityState.COMPLETE}}).then(() => {
                     console.log(`Updated participant activity '${req.body.participantActivityId}' state to COMPLETE`);
                     const participantActivityUpdateFilter = {
@@ -184,7 +184,7 @@ app.post('/activity/submitAnswer', (req, res) => {
 
                     res.json({isCorrectAnswer: true});
                 }).catch(err => { throw err; });
-            else {
+            } else {
                 res.json({isCorrectAnswer: false});
             }
         } else {
