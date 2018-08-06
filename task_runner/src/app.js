@@ -1,11 +1,11 @@
 const nodemailer = require('nodemailer');
+const log = require('simple-node-logger').createSimpleFileLogger('api.log');
 const emailUser = process.env.EMAIL_USER || 'user';
 const emailPass = process.env.EMAIL_PASS || 'pass';
 const attachmentFilePath = 'C:\\Temp\\';
 
 const MongoClient = require('mongodb').MongoClient;
-const ObjectId = require('mongodb').ObjectId;
-const mongodbUri = process.env.MONGODB_URI || 'mongodb://test:Password1.@ds159641.mlab.com:59641/office_quest';
+const mongodbUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/office_quest';
 
 const ActivityState = {
     FUTURE: 0,
@@ -34,12 +34,12 @@ let db;
 let connectionOptions = { useNewUrlParser: true };
 MongoClient.connect(mongodbUri, connectionOptions, (err, client) => {
     if (err) {
-        console.log(err);
+        log.error(err);
         process.exit(1);
     }
 
     db = client.db();
-    console.log('Database connection ready');
+    log.info('Database connection ready');
 
     app.initialize();
 });
@@ -64,6 +64,7 @@ const app = {
             if (!doc) return;
 
             db.collection('participant_activity').updateOne({_id: doc._id}, {$set: {state: ActivityState.NOTIFYING}}).then(() => {
+                log.info(`Sending email to notify participant '${doc.participant_id}' that participant activity ${doc._id} is now available (ACTIVE)`);
                 app.sendEmailNotification(doc).then(() => {
                     if (doc.completion_type === CompletionType.AUTOMATIC) {
                         db.collection('participant_activity').updateOne({_id: doc._id}, {$set: {state: ActivityState.COMPLETE}}).then(() => {
@@ -73,26 +74,26 @@ const app = {
                             };
 
                             db.collection('participant_activity').updateOne(participantActivityUpdateFilter, {$set: {state: ActivityState.STAGED}}).then((doc) => {
-                                console.log(`Updated next participant activity state to STAGED for participant '${doc.participant_id}'`);
+                                log.info(`Updated next participant activity state to STAGED for participant '${doc.participant_id}'`);
                             }).catch(err => { throw err; });
                         }).catch(err => {
-                            console.error(`Update participant activity '${doc._id.toString()}' state to COMPLETE failed because: ${err}`);
+                            log.error(`Update participant activity '${doc._id.toString()}' state to COMPLETE failed because: ${err}`);
                         });
                     } else {
                         db.collection('participant_activity').updateOne({_id: doc._id}, {$set: {state: ActivityState.ACTIVE}}).then(() => {
-                            // Nothing to do here...move along
+                            log.info(`Updated participant activity ${doc._id} state to ACTIVE for participant '${doc.participant_id}'`);
                         }).catch(err => {
-                            console.error(`Update participant activity '${doc._id.toString()}' state to ACTIVE failed because: ${err}`);
+                            log.error(`Update participant activity '${doc._id.toString()}' state to ACTIVE failed because: ${err}`);
                         });
                     }
                 }).catch(err => {
-                    console.error(`Send email to '${doc.participant_email}' for participant activity '${doc._id.toString()}' failed because: ${err}`);
+                    log.error(`Send email to '${doc.participant_email}' for participant activity '${doc._id.toString()}' failed because: ${err}`);
                 });
             }).catch(err => {
-                console.error(`Update participant activity '${doc._id.toString()}' state to NOTIFYING failed because: ${err}`);
+                log.error(`Update participant activity '${doc._id.toString()}' state to NOTIFYING failed because: ${err}`);
             });
         }).catch(err => {
-            console.error(`Find participant activity failed because: ${err}`);
+            log.error(`Find participant activity failed because: ${err}`);
         });
     },
 
