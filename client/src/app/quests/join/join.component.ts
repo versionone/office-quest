@@ -34,8 +34,9 @@ export class JoinComponent implements OnInit {
   }
 
   private isInputValid() {
-    return !!this.selectedQuestId && !!this.name &&
-      (!!this.email && this.email.toLowerCase().includes('@collab.net') && this.email.length > 11);
+    return !!this.selectedQuestId && !!this.name && !!this.email
+      && (this.email.toLowerCase().includes('@collab.net') && this.email.length > 11)
+      || (this.email.toLowerCase() === 'iam@hollyreynolds.net' || this.email.toLowerCase() === "midwestrpe@gmail.com");
   }
 
   public onQuestClick(questId) {
