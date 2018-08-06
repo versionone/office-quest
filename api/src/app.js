@@ -169,8 +169,15 @@ app.get('/activity/next', (req, res) => {
 });
 
 app.post('/activity/submitAnswer', (req, res) => {
-    db.collection('participant_activity').findOne({_id: ObjectId(req.body.participantActivityId)}, {projection: {answer: 1}}).then((doc) => {
+    const participantActivityProjection = {
+        state: 1,
+        answer: 1
+    };
+
+    db.collection('participant_activity').findOne({_id: ObjectId(req.body.participantActivityId)}, {projection: participantActivityProjection}).then((doc) => {
         if (doc) {
+            if (doc.state !== ActivityState.ACTIVE) return;
+
             if (req.body.answer.toLowerCase() === doc.answer.toLowerCase()) {
                 db.collection('participant_activity').updateOne({_id: ObjectId(req.body.participantActivityId)}, {$set: {state: ActivityState.COMPLETE}}).then(() => {
                     console.log(`Updated participant activity '${req.body.participantActivityId}' state to COMPLETE`);
@@ -195,8 +202,15 @@ app.post('/activity/submitAnswer', (req, res) => {
 });
 
 app.post('/activity/submitChoice', (req, res) => {
-    db.collection('participant_activity').findOne({_id: ObjectId(req.body.participantActivityId)}, {projection: {answer: 1}}).then((doc) => {
+    const participantActivityProjection = {
+        state: 1,
+        answer: 1
+    };
+
+    db.collection('participant_activity').findOne({_id: ObjectId(req.body.participantActivityId)}, {projection: participantActivityProjection}).then((doc) => {
         if (doc) {
+            if (doc.state !== ActivityState.ACTIVE) return;
+
             db.collection('participant_activity').updateOne({_id: ObjectId(req.body.participantActivityId)}, {$set: {state: ActivityState.COMPLETE}}).then(() => {
                 console.log(`Updated participant activity '${req.body.participantActivityId}' state to COMPLETE`);
 
@@ -222,8 +236,15 @@ app.post('/activity/submitChoice', (req, res) => {
 });
 
 app.post('/activity/submitKeys', (req, res) => {
-    db.collection('participant_activity').findOne({_id: ObjectId(req.body.participantActivityId)}, {projection: {answer: 1}}).then((doc) => {
+    const participantActivityProjection = {
+        state: 1,
+        answer: 1
+    };
+
+    db.collection('participant_activity').findOne({_id: ObjectId(req.body.participantActivityId)}, {projection: participantActivityProjection}).then((doc) => {
         if (doc) {
+            if (doc.state !== ActivityState.ACTIVE) return;
+
             const correctKeys = [];
 
             req.body.answer.forEach((code, idx) => {
