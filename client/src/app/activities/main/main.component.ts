@@ -69,6 +69,10 @@ export class MainComponent implements OnInit {
     return !!this.answer;
   }
 
+  public onChoiceClick(option) {
+    this.answer = option;
+  }
+
   public onSubmitClick() {
     this.answerIsCorrect = null;
     this.inputIsValid = this.isInputValid();
@@ -80,12 +84,21 @@ export class MainComponent implements OnInit {
       answer: this.answer,
     };
 
-    this.activityService.submitAnswer(postBody)
-      .subscribe((response: any) => {
-        this.answerIsCorrect = response.isCorrectAnswer
-      }, error => {
-        console.log('error', error);
-      })
+    if (this.type === this.activityType.Trivia) {
+      this.activityService.submitChoice(postBody)
+        .subscribe((response: any) => {
+          this.answerIsCorrect = response.isCorrectAnswer
+        }, error => {
+          console.log('error', error);
+        })
+    } else {
+      this.activityService.submitAnswer(postBody)
+        .subscribe((response: any) => {
+          this.answerIsCorrect = response.isCorrectAnswer
+        }, error => {
+          console.log('error', error);
+        })
+    }
   }
 
   public onKeydown(e) {

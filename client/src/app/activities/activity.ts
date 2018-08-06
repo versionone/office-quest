@@ -6,6 +6,7 @@ export class Activity {
   message: string;
   answer: any;
   faux: any;
+  choices: any;
   email: Email;
 }
 
@@ -14,6 +15,8 @@ export enum ActivityType {
   Online = 1,
   Scramble = 2,
   Hunt = 3,
+  Trivia = 99,
+  Notification = 100,
 }
 class Email {
   subject: string;

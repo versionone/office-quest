@@ -144,6 +144,7 @@ app.get('/activity/current', (req, res) => {
         type : 1,
         message : 1,
         faux: 1,
+        choices: 1,
     };
 
     db.collection('participant_activity').findOne(participantActivityQuery, {projection: participantActivityProjection}).then((doc) => {
@@ -187,6 +188,33 @@ app.post('/activity/submitAnswer', (req, res) => {
             } else {
                 res.json({isCorrectAnswer: false});
             }
+        } else {
+            throw new Error(`A participantActivity with _id '${req.body.participantActivityId}' was not found`);
+        }
+    }).catch(err => { throw err; });
+});
+
+app.post('/activity/submitChoice', (req, res) => {
+    db.collection('participant_activity').findOne({_id: ObjectId(req.body.participantActivityId)}, {projection: {answer: 1}}).then((doc) => {
+        if (doc) {
+            db.collection('participant_activity').updateOne({_id: ObjectId(req.body.participantActivityId)}, {$set: {state: ActivityState.COMPLETE}}).then(() => {
+                console.log(`Updated participant activity '${req.body.participantActivityId}' state to COMPLETE`);
+
+                if (req.body.answer.toLowerCase() === doc.answer.toLowerCase()) {
+                    const participantActivityUpdateFilter = {
+                        participant_id: req.body.participantId,
+                        state: ActivityState.FUTURE,
+                    };
+
+                    db.collection('participant_activity').updateOne(participantActivityUpdateFilter, {$set: {state: ActivityState.STAGED}}).then((doc) => {
+                        console.log(`Updated next participant activity state to STAGED for participant '${req.body.participantId}'`);
+                    }).catch(err => { throw err; });
+
+                    res.json({isCorrectAnswer: true});
+                } else {
+                    res.json({isCorrectAnswer: false});
+                }
+            }).catch(err => { throw err; });
         } else {
             throw new Error(`A participantActivity with _id '${req.body.participantActivityId}' was not found`);
         }

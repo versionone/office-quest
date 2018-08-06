@@ -15,6 +15,21 @@ const ActivityState = {
     COMPLETE: 128,
 };
 
+const ActivityType = {
+    GUI: 0,
+    ONLINE: 1,
+    SCRAMBLE: 2,
+    HUNT: 3,
+    TRIVIA: 99,
+    NOTIFICATION: 100,
+};
+
+const CompletionType = {
+  ANSWER: 0,
+  MANUAL: 1,
+  AUTOMATIC: 100,
+};
+
 let db;
 let connectionOptions = { useNewUrlParser: true };
 MongoClient.connect(mongodbUri, connectionOptions, (err, client) => {
@@ -32,14 +47,17 @@ MongoClient.connect(mongodbUri, connectionOptions, (err, client) => {
 const app = {
     processStagedActivities: () => {
         const participantActivityQuery = {
+            type: {$ne: ActivityType.TRIVIA},
             state: ActivityState.STAGED,
             start_datetime: {$lte: new Date()},
         };
 
         const participantActivityProjection = {
             _id: 1,
+            participant_id: 1,
             participant_email : 1,
             email : 1,
+            completion_type: 1,
         };
 
         db.collection('participant_activity').findOne(participantActivityQuery, {projection: participantActivityProjection}).then(doc => {
@@ -47,11 +65,26 @@ const app = {
 
             db.collection('participant_activity').updateOne({_id: doc._id}, {$set: {state: ActivityState.NOTIFYING}}).then(() => {
                 app.sendEmailNotification(doc).then(() => {
-                    db.collection('participant_activity').updateOne({_id: doc._id}, {$set: {state: ActivityState.ACTIVE}}).then(() => {
-                        // Nothing to do here...move along
-                    }).catch(err => {
-                        console.error(`Update participant activity '${doc._id.toString()}' state to ACTIVE failed because: ${err}`);
-                    });
+                    if (doc.completion_type === CompletionType.AUTOMATIC) {
+                        db.collection('participant_activity').updateOne({_id: doc._id}, {$set: {state: ActivityState.COMPLETE}}).then(() => {
+                            const participantActivityUpdateFilter = {
+                                participant_id: doc.participant_id,
+                                state: ActivityState.FUTURE,
+                            };
+
+                            db.collection('participant_activity').updateOne(participantActivityUpdateFilter, {$set: {state: ActivityState.STAGED}}).then((doc) => {
+                                console.log(`Updated next participant activity state to STAGED for participant '${doc.participant_id}'`);
+                            }).catch(err => { throw err; });
+                        }).catch(err => {
+                            console.error(`Update participant activity '${doc._id.toString()}' state to COMPLETE failed because: ${err}`);
+                        });
+                    } else {
+                        db.collection('participant_activity').updateOne({_id: doc._id}, {$set: {state: ActivityState.ACTIVE}}).then(() => {
+                            // Nothing to do here...move along
+                        }).catch(err => {
+                            console.error(`Update participant activity '${doc._id.toString()}' state to ACTIVE failed because: ${err}`);
+                        });
+                    }
                 }).catch(err => {
                     console.error(`Send email to '${doc.participant_email}' for participant activity '${doc._id.toString()}' failed because: ${err}`);
                 });

@@ -20,13 +20,13 @@
   </div>
 
   <div *ngIf="type==activityType.Trivia" class="component">
-    <div *ngFor="let choice of currentActivity.choices">
+    <div *ngFor="let choice of currentActivity.choices" (click)="onChoiceClick(choice.option)" [class.selected]="answer === choice.option" class="choice">
       {{choice.option}}: {{choice.value}}
     </div>
     <button (click)="onSubmitClick()">Submit</button>
-    <div *ngIf="inputIsValid == false" class="error">You must enter an answer to submit</div>
-    <div *ngIf="answerIsCorrect == false" class="error">Your answer is incorrect, please try again</div>
-    <div *ngIf="answerIsCorrect == true" class="success">Congratulations, you have completed this activity! We'll send you an email when your next activity is ready.</div>
+    <div *ngIf="inputIsValid == false" class="error">You must choose one of the options to submit</div>
+    <div *ngIf="answerIsCorrect == false" class="error">Your answer is incorrect, your game is over. Thank you for playing our game</div>
+    <div *ngIf="answerIsCorrect == true" class="success">Your answer is correct! The organizer will have your next question available in a moment</div>
   </div>
 </div>
 
