@@ -80,7 +80,13 @@ app.post('/quest/join', (req, res) => {
         email: req.body.email
     };
 
-    db.collection('participant').findOne(participantQuery, {projection: {_id: 1}}).then(doc => {
+    const participantProjection = {
+        _id: 1,
+        quest_id: 1,
+        email: 1,
+    };
+
+    db.collection('participant').findOne(participantQuery, {projection: participantProjection}).then(doc => {
         if (doc) {
             log.info(`The participant email '${doc.email}' already exists for quest '${doc.quest_id}', return participant _id '${doc._id}'`);
             res.json({ _id: doc._id });
