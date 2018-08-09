@@ -16,6 +16,12 @@ const ActivityState = {
     COMPLETE: 128,
 };
 
+const CompletionType = {
+    ANSWER: 0,
+    MANUAL: 1,
+    AUTOMATIC: 100,
+};
+
 let setHeaders = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
@@ -280,4 +286,58 @@ app.post('/activity/submitKeys', (req, res) => {
             throw new Error(`A participantActivity with _id '${req.body.participantActivityId}' was not found`);
         }
     }).catch(err => { throw err; });
+});
+
+
+// Admin stuff
+const isAuthorized = (name, password) => {
+    return new Promise((resolve, reject) => {
+        if (!name || !password) {
+            log.warn(`An invalid authorization was attempted with name: ${name} and password: ${password}`);
+            reject();
+        }
+
+        const adminQuery = {
+            name: name,
+            password: password,
+        };
+
+        db.collection('admin').findOne(adminQuery, {projection: {_id: 1}}).then(doc => {
+            if (!doc) {
+                log.warn(`An invalid authorization was attempted with name: ${name} and password: ${password}`);
+                reject('Ah, ah, ah, you didn\'t say the magic word');
+            } else {
+                resolve();
+            }
+        }).catch(err => { throw err; });
+    })
+};
+
+app.get('/activity/requireManualApproval', (req, res) => {
+    isAuthorized(req.header("Name"), req.header("Password")).then(() => {
+        const participantActivityQuery = {
+            state: ActivityState.ACTIVE,
+            completion_type: CompletionType.MANUAL,
+        };
+
+        const participantActivityProjection = {
+            _id: 1,
+            participant_name: 1,
+            participant_email: 1,
+            message: 1,
+            email: 1,
+        };
+
+        db.collection('participant_activity').find(participantActivityQuery, {projection: participantActivityProjection}).toArray().then(docs => {
+            res.json(docs.map(doc => {
+                return {
+                    ...doc,
+                    email_subject: doc.email.subject,
+                    email: {},
+                }
+            }));
+        }).catch(err => { throw err; });
+    }).catch((err) => {
+        res.status(403).send({message: err});
+    });
 });
