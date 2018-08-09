@@ -1,0 +1,11 @@
+<div class="container">
+  <div *ngIf="isAdministrator(); then adminActivityTemplate else loginTemplate"></div>
+</div>
+
+<ng-template #adminActivityTemplate>
+  Admin Activity
+</ng-template>
+
+<ng-template #loginTemplate>
+  Login Activity
+</ng-template>
