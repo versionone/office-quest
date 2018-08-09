@@ -154,7 +154,7 @@ app.get('/activity/current', (req, res) => {
         choices: 1,
     };
 
-    db.collection('participant_activity').findOne(participantActivityQuery, {projection: participantActivityProjection}).then((doc) => {
+    db.collection('participant_activity').findOne(participantActivityQuery, {projection: participantActivityProjection}).then(doc => {
         res.json(doc);
     }).catch(err => { throw err; });
 });
@@ -170,7 +170,7 @@ app.get('/activity/next', (req, res) => {
         start_datetime : 1,
     };
 
-    db.collection('participant_activity').findOne(participantActivityQuery, {projection: participantActivityProjection}).then((doc) => {
+    db.collection('participant_activity').findOne(participantActivityQuery, {projection: participantActivityProjection}).then(doc => {
         res.json(doc);
     }).catch(err => { throw err; });
 });
@@ -181,7 +181,7 @@ app.post('/activity/submitAnswer', (req, res) => {
         answer: 1
     };
 
-    db.collection('participant_activity').findOne({_id: ObjectId(req.body.participantActivityId)}, {projection: participantActivityProjection}).then((doc) => {
+    db.collection('participant_activity').findOne({_id: ObjectId(req.body.participantActivityId)}, {projection: participantActivityProjection}).then(doc => {
         if (doc) {
             if (doc.state !== ActivityState.ACTIVE) return;
 
@@ -193,7 +193,7 @@ app.post('/activity/submitAnswer', (req, res) => {
                         state: ActivityState.FUTURE,
                     };
 
-                    db.collection('participant_activity').updateOne(participantActivityUpdateFilter, {$set: {state: ActivityState.STAGED}}).then((doc) => {
+                    db.collection('participant_activity').updateOne(participantActivityUpdateFilter, {$set: {state: ActivityState.STAGED}}).then(() => {
                         log.info(`Updated next participant activity state to STAGED for participant '${req.body.participantId}'`);
                     }).catch(err => { throw err; });
 
@@ -214,7 +214,7 @@ app.post('/activity/submitChoice', (req, res) => {
         answer: 1
     };
 
-    db.collection('participant_activity').findOne({_id: ObjectId(req.body.participantActivityId)}, {projection: participantActivityProjection}).then((doc) => {
+    db.collection('participant_activity').findOne({_id: ObjectId(req.body.participantActivityId)}, {projection: participantActivityProjection}).then(doc => {
         if (doc) {
             if (doc.state !== ActivityState.ACTIVE) return;
 
@@ -227,7 +227,7 @@ app.post('/activity/submitChoice', (req, res) => {
                         state: ActivityState.FUTURE,
                     };
 
-                    db.collection('participant_activity').updateOne(participantActivityUpdateFilter, {$set: {state: ActivityState.STAGED}}).then((doc) => {
+                    db.collection('participant_activity').updateOne(participantActivityUpdateFilter, {$set: {state: ActivityState.STAGED}}).then(() => {
                         log.info(`Updated next participant activity state to STAGED for participant '${req.body.participantId}'`);
                     }).catch(err => { throw err; });
 
@@ -248,7 +248,7 @@ app.post('/activity/submitKeys', (req, res) => {
         answer: 1
     };
 
-    db.collection('participant_activity').findOne({_id: ObjectId(req.body.participantActivityId)}, {projection: participantActivityProjection}).then((doc) => {
+    db.collection('participant_activity').findOne({_id: ObjectId(req.body.participantActivityId)}, {projection: participantActivityProjection}).then(doc => {
         if (doc) {
             if (doc.state !== ActivityState.ACTIVE) return;
 
@@ -267,7 +267,7 @@ app.post('/activity/submitKeys', (req, res) => {
                         state: ActivityState.FUTURE,
                     };
 
-                    db.collection('participant_activity').updateOne(participantActivityUpdateFilter, {$set: {state: ActivityState.STAGED}}).then((doc) => {
+                    db.collection('participant_activity').updateOne(participantActivityUpdateFilter, {$set: {state: ActivityState.STAGED}}).then(() => {
                         log.info(`Updated next participant activity state to STAGED for participant '${req.body.participantId}'`);
                     }).catch(err => { throw err; });
 
