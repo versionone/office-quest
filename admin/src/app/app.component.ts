@@ -14,7 +14,7 @@ export class AppComponent {
 
   constructor(private storageService: StorageService) { }
 
-  public isAdministrator(): boolean {
-    return !!this.storageService.getAdministratorId();
+  public isAuthenticated(): boolean {
+    return !!this.storageService.getCredentials();
   }
 }

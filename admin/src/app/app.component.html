@@ -1,5 +1,5 @@
 <div class="container">
-  <div *ngIf="isAdministrator(); then adminActivityTemplate else loginTemplate"></div>
+  <div *ngIf="isAuthenticated(); then adminActivityTemplate else loginTemplate"></div>
 </div>
 
 <ng-template #adminActivityTemplate>

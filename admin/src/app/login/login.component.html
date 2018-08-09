@@ -1,3 +1,20 @@
 <div>
   <h1>Please log in below</h1>
+  <div class="entryForm">
+    <div class="field">
+      <label>Email:
+        <input [(ngModel)]="email" id="emailInput" type="text" tabindex="0">
+      </label>
+    </div>
+    <div class="field">
+      <label>Password:
+        <input [(ngModel)]="password" id="passwordInput" type="text" tabindex="0">
+      </label>
+    </div>
+    <button (click)="onLoginClick()">Login</button>
+    <div *ngIf="inputIsValid == false" class="error">You must provide your email and password to log in</div>
+  </div>
+  <div class="hackweekLogo">
+    <img src="../assets/images/HackWeek2018.png" />
+  </div>
 </div>

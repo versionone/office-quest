@@ -290,31 +290,42 @@ app.post('/activity/submitKeys', (req, res) => {
 
 
 // Admin stuff
-const isAuthorized = (name, password) => {
+const isAuthorized = (email, password) => {
     return new Promise((resolve, reject) => {
-        if (!name || !password) {
-            log.warn(`An invalid authorization was attempted with name: ${name} and password: ${password}`);
-            reject();
+        if (email && password) {
+            const administratorQuery = {
+                email: email,
+                password: password,
+            };
+
+            log.info('administratorQuery: ', administratorQuery);
+            db.collection('administrator').findOne(administratorQuery, {projection: {_id: 1}}).then(doc => {
+                log.info('doc: ', doc);
+                if (doc) {
+                    resolve();
+                } else {
+                    log.warn(`An invalid authorization was attempted with email: ${email} and password: ${password}`);
+                    reject('Ah, ah, ah, you didn\'t say the magic word');
+                }
+            }).catch(err => { throw err; });
+        } else {
+            log.warn(`An invalid authorization was attempted with email: ${email} and password: ${password}`);
+            reject('Ah, ah, ah, you didn\'t say the magic word');
         }
-
-        const adminQuery = {
-            name: name,
-            password: password,
-        };
-
-        db.collection('admin').findOne(adminQuery, {projection: {_id: 1}}).then(doc => {
-            if (!doc) {
-                log.warn(`An invalid authorization was attempted with name: ${name} and password: ${password}`);
-                reject('Ah, ah, ah, you didn\'t say the magic word');
-            } else {
-                resolve();
-            }
-        }).catch(err => { throw err; });
     })
 };
 
-app.get('/activity/requireManualApproval', (req, res) => {
-    isAuthorized(req.header("Name"), req.header("Password")).then(() => {
+app.post('/admin/login', (req, res) => {
+    isAuthorized(req.body.email, req.body.password).then(() => {
+        res.send({ isAuthorized: true });
+    }).catch(() => {
+        res.status(403).send({ isAuthorized: false });
+    });
+});
+
+app.get('/admin/requireManualApproval', (req, res) => {
+    isAuthorized(req.header("Email"), req.header("Password")).then(() => {
+        log.info('authorized');
         const participantActivityQuery = {
             state: ActivityState.ACTIVE,
             completion_type: CompletionType.MANUAL,

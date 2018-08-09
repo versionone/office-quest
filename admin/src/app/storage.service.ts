@@ -6,11 +6,11 @@ import { Injectable } from '@angular/core';
 
 export class StorageService {
 
-  public getAdministratorId(): string {
-    return localStorage.getItem("administratorId");
+  public getCredentials(): string {
+    return localStorage.getItem("credentials");
   }
 
-  public setAdministratorId(administrator): void {
-    localStorage.setItem("administratorId", JSON.stringify(administrator._id));
+  public setCredentials(credentials): void {
+    localStorage.setItem("credentials", JSON.stringify(credentials));
   }
 }
