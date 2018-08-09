@@ -6,6 +6,15 @@ html, body {
   background-size: cover;
 }
 
+@font-face {
+  font-family: 'pcap_terminalbold';
+  src: url('assets/fonts/pcap_terminal_bold-webfont.woff2') format('woff2'),
+  url('assets/fonts/pcap_terminal_bold-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
 h1 {
   font-family: 'pcap_terminalbold';
   color: #fafafa;
