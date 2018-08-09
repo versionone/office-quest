@@ -1,1 +1,280 @@
-/* You can add global styles to this file, and also import other style files */
+html, body {
+  background: url(assets/images/HackWeek2018-background.png) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+h1 {
+  font-family: 'pcap_terminalbold';
+  color: #fafafa;
+  letter-spacing: 6px;
+  margin-top: 2em;
+}
+
+.regionSelector {
+  display: flex;
+  margin: .7em 0 0 0;
+  padding: 0;
+  width: 75%;
+}
+
+.regionSelector li {
+  background-color: #190a1c;
+  border: 0;
+  width: 50%;
+  text-align: center;
+  cursor: pointer;
+}
+
+.regionSelector .selected {
+  background-color: #7DB1FC !important;
+  color: #333;
+}
+
+.regionSelector li:nth-child(1) {
+  border-radius: 25px 0px 0px 25px;
+}
+
+
+.regionSelector li:nth-child(2) {
+  border-radius: 0px 25px 25px 0px;
+}
+
+.main {
+  border-radius: 35px;
+  box-shadow: 0px 0px 22px #002dd3;
+  display: flex;
+  margin: 4em auto;
+  flex-direction: column;
+  padding: 2em 3em 3em 3em;
+  max-width: 40%;
+  background-color:rgba(0, 0, 0, 0.7);
+  text-align: left;
+  color: #a3aac4;
+  font-family: "Lucida Console", Monaco, monospace;
+}
+
+.main .component {
+  display: flex;
+  padding: 1em 0;
+  flex-direction: column;
+}
+
+.main .component button {
+  margin-top: 1em;
+  font-size: 17px;
+  padding: .4em 0;
+  width: 160px !important;
+}
+
+.main label {
+  display: flex;
+  flex-direction: column;
+  padding: 2em 0;
+}
+
+.main label input {
+  padding: 1em 0;
+  background-color: transparent;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: thin #292e42 solid;
+  color: #fff;
+  font-family: "Lucida Console", Monaco, monospace;
+  font-size: 20px;
+  outline: none;
+}
+
+.main button {
+  cursor: pointer;
+  outline: 0;
+  font-family: "Lucida Console", Monaco, monospace;
+  font-size: 16px;
+  border-radius: 25px;
+  padding: .7em 0;
+  color: #fff;
+  border: 0;
+  width: 160px !important;
+  text-align: center !important;
+  margin: 0 auto;
+  display: block;
+  background: #4500d1; /* Old browsers */
+  background: -moz-linear-gradient(-45deg, #4500d1 0%, #f60efe 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(-45deg, #4500d1 0%,#f60efe 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(135deg, #4500d1 0%,#f60efe 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4500d1', endColorstr='#f60efe',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+}
+
+.main a {
+  color: #6fa6ff;
+}
+
+.entryForm {
+  border-radius: 35px;
+  box-shadow: 0px 0px 22px #002dd3;
+  display: flex;
+  margin: 2em auto;
+  flex-direction: column;
+  padding: 3em;
+  max-width: 40%;
+  background-color:rgba(0, 0, 0, 0.7);
+  text-align: left;
+  color: #a3aac4;
+  font-family: "Lucida Console", Monaco, monospace;
+}
+
+.entryForm .component {
+  display: flex;
+  padding: 1em 0;
+  flex-direction: column;
+}
+
+.entryForm .field {
+  padding: 1em 0;
+}
+
+.entryForm .component button {
+  margin-top: 1em;
+  font-size: 17px;
+  padding: .4em 0;
+  width: 160px !important;
+}
+
+.entryForm .field label {
+  display: flex;
+  flex-direction: column;
+}
+
+.entryForm .field label input {
+  padding: 1em 0;
+  background-color: transparent;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: thin #292e42 solid;
+  color: #fff;
+  font-family: "Lucida Console", Monaco, monospace;
+  font-size: 20px;
+  outline: none;
+}
+
+.entryForm button {
+  cursor: pointer;
+  outline: 0;
+  font-family: "Lucida Console", Monaco, monospace;
+  font-size: 18px;
+  border-radius: 25px;
+  padding: .7em 0;
+  color: #fff;
+  border: 0;
+  width: 190px !important;
+  text-align: center;
+  margin: 0 auto;
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#4500d1+0,f60efe+100 */
+  background: #4500d1; /* Old browsers */
+  background: -moz-linear-gradient(-45deg, #4500d1 0%, #f60efe 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(-45deg, #4500d1 0%,#f60efe 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(135deg, #4500d1 0%,#f60efe 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4500d1', endColorstr='#f60efe',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+}
+
+::-webkit-input-placeholder {
+  color:transparent;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+  color:transparent;
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+  color:transparent;
+}
+
+:-ms-input-placeholder {
+  color:transparent;
+}
+
+.hackweekLogo {
+  margin: 2em auto;
+  text-align: center;
+}
+
+.container {
+  text-align: center;
+}
+
+.success {
+  color: #44f386;
+  font-family: "Lucida Console", Monaco, monospace;
+  margin-top: 1em;
+}
+
+.error {
+  color: #f34444;
+  padding: 2em 0 1em 0;
+  font-family: "Lucida Console", Monaco, monospace;
+  margin-top: 1em;
+}
+
+li {
+  background-color: white;
+}
+
+.activity-message {
+  font-family: "Lucida Console", Monaco, monospace;
+  color: #a3aac4;
+  line-height: 22px;
+}
+
+.activity-container {
+  margin: 3em auto;
+  text-align: center;
+}
+
+.no-activity-container {
+  margin: 3em auto;
+  text-align: center;
+}
+
+.no-activity-image, .activity-image, .quest-image {
+  margin: 1em auto;
+  text-align: center;
+}
+
+.no-activity-image img, .activity-image img, .quest-image img {
+  height: 175px;
+}
+
+.next-activity, .no-activity {
+  padding: 1em;
+  font-family: "Lucida Console", Monaco, monospace;
+  font-size: 20px;
+  color: #a3aac4;
+  width: 100%;
+}
+
+#keyReceiver {
+  position: relative;
+  top: 0;
+  left: 0;
+  box-shadow: none;
+  outline: none;
+}
+
+.choice {
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 35px;
+  box-shadow: 0px 0px 22px #002dd3;
+}
+
+.choice.selected {
+  box-shadow: 0px 0px 22px #44f386;
+}
+
+.choice-container {
+  margin-top: 20px;
+}
