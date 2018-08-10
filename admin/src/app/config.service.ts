@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -6,11 +7,23 @@ import { Injectable } from '@angular/core';
 
 export class ConfigService {
 
+  constructor(
+    private storageService: StorageService,
+  ) { }
+
   public getApiBaseUrl(): string {
-    return 'http://localhost:4201/'
+    return 'http://localhost:4201/admin/'
   }
 
   public getApiRequestHeaders(): object {
-    return { headers: {'Content-Type': 'application/json'} };
+    const headers = { headers: {'Content-Type': 'application/json'} };
+    const credentials = this.storageService.getCredentials();
+
+    if (credentials) {
+      headers['headers']['Email'] = credentials['email'];
+      headers['headers']['Password'] = credentials['password']
+    }
+
+    return headers;
   }
 }
