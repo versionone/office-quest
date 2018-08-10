@@ -323,9 +323,8 @@ app.post('/admin/login', (req, res) => {
     });
 });
 
-app.get('/admin/requireManualApproval', (req, res) => {
+app.get('/admin/activities/requiringManualApproval', (req, res) => {
     isAuthorized(req.header("Email"), req.header("Password")).then(() => {
-        log.info('authorized');
         const participantActivityQuery = {
             state: ActivityState.ACTIVE,
             completion_type: CompletionType.MANUAL,
@@ -335,6 +334,7 @@ app.get('/admin/requireManualApproval', (req, res) => {
             _id: 1,
             participant_name: 1,
             participant_email: 1,
+            start_datetime: 1,
             message: 1,
             email: 1,
         };
