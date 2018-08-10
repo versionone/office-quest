@@ -14,7 +14,7 @@ export class LoginService {
     private http:HttpClient,
     private configService: ConfigService,
   ) {
-    this.loginUrl = this.configService.getApiBaseUrl().concat('admin/login');
+    this.loginUrl = this.configService.getApiBaseUrl().concat('login');
     this.headers = this.configService.getApiRequestHeaders();
   }
 
