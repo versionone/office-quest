@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
 export class StorageService {
 
   public getCredentials(): string {
-    return localStorage.getItem("credentials");
+    return JSON.parse(localStorage.getItem("credentials"));
   }
 
   public setCredentials(credentials): void {
