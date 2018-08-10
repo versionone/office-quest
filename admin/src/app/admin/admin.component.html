@@ -1,12 +1,20 @@
-<div>
-  <h1>Welcome to Admin</h1>
-  <ul class="manual-approval-activities">
-    <li *ngFor="let manualApprovalActivity of manualApprovalActivities"
-        (click)="onManualApprovalActivityClick(manualApprovalActivities._id)"
+<div *ngIf="manualApprovalActivities.length">
+  <h1>Activities Requiring Manual Approval</h1>
+  <div class="manual-approval-container">
+    <div *ngFor="let manualApprovalActivity of manualApprovalActivities"
+        class="manual-approval-activity"
         [class.selected]="selectedManualApprovalActivityId === manualApprovalActivity._id">
-      {{manualApprovalActivity.participant_name}}
-      {{manualApprovalActivity.participant_email}}
-      {{manualApprovalActivity.email_subject}}
-    </li>
-  </ul>
+      <div>
+        <div>{{manualApprovalActivity.participant_name}}</div>
+        <div>{{manualApprovalActivity.participant_email}}</div>
+        <div>{{manualApprovalActivity.email_subject}}</div>
+      </div>
+      <div class="btn-container">
+        <button (click)="onApproveClick(manualApprovalActivity)">Approve</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="!manualApprovalActivities.length">
+  <h1>No Activities Require Manual Approval</h1>
 </div>

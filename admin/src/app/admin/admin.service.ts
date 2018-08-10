@@ -9,6 +9,7 @@ import { HttpClient } from "@angular/common/http";
 export class AdminService {
 
   private readonly activitiesRequiringManualApprovalUrl: string;
+  private readonly approveActivityUrl: string;
   private readonly headers: object;
 
   constructor(
@@ -16,10 +17,15 @@ export class AdminService {
     private configService: ConfigService,
   ) {
     this.activitiesRequiringManualApprovalUrl = this.configService.getApiBaseUrl().concat('activities/requiringManualApproval');
+    this.approveActivityUrl = this.configService.getApiBaseUrl().concat('activity/approve');
     this.headers = this.configService.getApiRequestHeaders();
   }
 
   public getActivitiesRequiringManualApproval(): Observable<Object> {
     return this.http.get(this.activitiesRequiringManualApprovalUrl, this.headers);
+  }
+
+  public approveActivity(postBody: { participantActivityId: string; }) {
+    return this.http.post(this.approveActivityUrl, postBody, this.headers)
   }
 }

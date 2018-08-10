@@ -1,5 +1,6 @@
 export class Activity {
   _id: string;
+  participant_id: string;
   participant_name: string;
   participant_email: string;
   start_datetime: Date;

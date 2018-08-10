@@ -330,6 +330,7 @@ app.get('/admin/activities/requiringManualApproval', (req, res) => {
 
         const participantActivityProjection = {
             _id: 1,
+            participant_id: 1,
             participant_name: 1,
             participant_email: 1,
             start_datetime: 1,
@@ -348,5 +349,33 @@ app.get('/admin/activities/requiringManualApproval', (req, res) => {
         }).catch(err => { throw err; });
     }).catch((err) => {
         res.status(403).send({message: err});
+    });
+});
+
+app.post('/admin/activity/approve', (req, res) => {
+    isAuthorized(req.header("Email"), req.header("Password")).then(() => {
+        db.collection('participant_activity').findOne({_id: ObjectId(req.body.participantActivityId)}, {projection: {state: 1}}).then(doc => {
+            if (doc) {
+                if (doc.state !== ActivityState.ACTIVE) return;
+
+                db.collection('participant_activity').updateOne({_id: ObjectId(req.body.participantActivityId)}, {$set: {state: ActivityState.COMPLETE}}).then(() => {
+                    log.info(`Updated participant activity '${req.body.participantActivityId}' state to COMPLETE`);
+                    const participantActivityUpdateFilter = {
+                        participant_id: req.body.participantId,
+                        state: ActivityState.FUTURE,
+                    };
+
+                    db.collection('participant_activity').updateOne(participantActivityUpdateFilter, {$set: {state: ActivityState.STAGED}}).then(() => {
+                        log.info(`Updated next participant activity state to STAGED for participant '${req.body.participantId}'`);
+                    }).catch(err => { throw err; });
+
+                    res.json({isCorrectAnswer: true});
+                }).catch(err => { throw err; });
+            } else {
+                throw new Error(`A participantActivity with _id '${req.body.participantActivityId}' was not found`);
+            }
+        }).catch(err => { throw err; });
+    }).catch(() => {
+        res.status(403).send({ isAuthorized: false });
     });
 });

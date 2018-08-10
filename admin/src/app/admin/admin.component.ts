@@ -9,8 +9,7 @@ import { AdminService } from './admin.service';
 })
 export class AdminComponent implements OnInit {
 
-  public manualApprovalActivities: Activity[];
-  public selectedManualApprovalActivityId: string;
+  public manualApprovalActivities: Activity[] = [];
 
   constructor(
     private adminService: AdminService,
@@ -23,8 +22,18 @@ export class AdminComponent implements OnInit {
       });
   }
 
-  public onManualApprovalActivityClick(manualApprovalActivityId) {
-    this.selectedManualApprovalActivityId = manualApprovalActivityId;
+  public onApproveClick(manualApprovalActivity) {
+    const postBody = {
+      participantActivityId: manualApprovalActivity._id,
+      participantId: manualApprovalActivity.participant_id,
+    };
+
+    this.adminService.approveActivity(postBody)
+      .subscribe(() => {
+        this.getActivitiesRequiringManualApproval();
+      }, error => {
+        console.log('error', error);
+      });
   }
 
   ngOnInit() {
