@@ -298,9 +298,7 @@ const isAuthorized = (email, password) => {
                 password: password,
             };
 
-            log.info('administratorQuery: ', administratorQuery);
             db.collection('administrator').findOne(administratorQuery, {projection: {_id: 1}}).then(doc => {
-                log.info('doc: ', doc);
                 if (doc) {
                     resolve();
                 } else {
