@@ -3,7 +3,11 @@
 </div>
 
 <ng-template #adminActivityTemplate>
-  <app-admin></app-admin>
+  <nav>
+    <a routerLink="/admin">Administration</a>
+    <a routerLink="/trivia">Trivia</a>
+  </nav>
+  <router-outlet></router-outlet>
 </ng-template>
 
 <ng-template #loginTemplate>
