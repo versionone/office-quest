@@ -8,6 +8,7 @@ import { HttpClient } from "@angular/common/http";
 })
 export class AdminService {
 
+  private readonly questsUrl: string;
   private readonly activitiesRequiringManualApprovalUrl: string;
   private readonly approveActivityUrl: string;
   private readonly headers: object;
@@ -16,13 +17,18 @@ export class AdminService {
     private http:HttpClient,
     private configService: ConfigService,
   ) {
-    this.activitiesRequiringManualApprovalUrl = this.configService.getApiBaseUrl().concat('activities/requiringManualApproval');
-    this.approveActivityUrl = this.configService.getApiBaseUrl().concat('activity/approve');
+    this.questsUrl = this.configService.getApiBaseUrl().concat('quests');
+    this.activitiesRequiringManualApprovalUrl = this.configService.getApiBaseUrl().concat('admin/activities/requiringManualApproval');
+    this.approveActivityUrl = this.configService.getApiBaseUrl().concat('admin/activity/approve');
     this.headers = this.configService.getApiRequestHeaders();
   }
 
-  public getActivitiesRequiringManualApproval(): Observable<Object> {
-    return this.http.get(this.activitiesRequiringManualApprovalUrl, this.headers);
+  public getQuests(): Observable<Object> {
+    return this.http.get(this.questsUrl);
+  }
+
+  public getActivitiesRequiringManualApproval(questId: string): Observable<Object> {
+    return this.http.get(this.activitiesRequiringManualApprovalUrl.concat(`?questId=${questId}`), this.headers);
   }
 
   public approveActivity(postBody: { participantActivityId: string; }) {

@@ -13,4 +13,12 @@ export class StorageService {
   public setCredentials(credentials): void {
     localStorage.setItem("credentials", JSON.stringify(credentials));
   }
+
+  public getSelectedQuestId(): string {
+    return JSON.parse(localStorage.getItem("selectedQuestId"));
+  }
+
+  setSelectedQuestId(questId: string) {
+    localStorage.setItem("selectedQuestId", JSON.stringify(questId));
+  }
 }

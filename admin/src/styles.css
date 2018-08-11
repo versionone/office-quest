@@ -21,6 +21,37 @@ h1, h2 {
   letter-spacing: 6px;
 }
 
+.region-selector-container {
+  color: #a3aac4;
+}
+
+.regionSelector {
+  display: inline-flex;
+  padding-left: 10px;
+}
+
+.regionSelector li {
+  background-color: #190a1c;
+  box-shadow: 0px 0px 22px #002dd3;
+  text-align: center;
+  cursor: pointer;
+  list-style: none;
+  padding: 10px;
+}
+
+.regionSelector .selected {
+  box-shadow: 0px 0px 22px #44f386;
+}
+
+.regionSelector li:nth-child(1) {
+  border-radius: 25px 0px 0px 25px;
+}
+
+
+.regionSelector li:nth-child(2) {
+  border-radius: 0px 25px 25px 0px;
+}
+
 .main {
   border-radius: 35px;
   box-shadow: 0px 0px 22px #002dd3;
@@ -182,7 +213,7 @@ h1, h2 {
 }
 
 .container {
-  margin-top: 80px;
+  margin-top: 65px;
   font-family: "Lucida Console", Monaco, monospace;
   text-align: center;
 }

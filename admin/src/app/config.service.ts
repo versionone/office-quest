@@ -12,7 +12,7 @@ export class ConfigService {
   ) { }
 
   public getApiBaseUrl(): string {
-    return 'http://localhost:4201/admin/'
+    return 'http://localhost:4201/'
   }
 
   public getApiRequestHeaders(): object {

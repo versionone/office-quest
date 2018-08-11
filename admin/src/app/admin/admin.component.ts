@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Activity } from './activity';
 import { AdminService } from './admin.service';
+import { Quest } from '../quest';
+import { StorageService } from '../storage.service';
 
 @Component({
   selector: 'app-admin',
@@ -9,17 +11,39 @@ import { AdminService } from './admin.service';
 })
 export class AdminComponent implements OnInit {
 
+  public quests: Quest[];
   public manualApprovalActivities: Activity[] = [];
+  public selectedQuestId: string;
 
   constructor(
     private adminService: AdminService,
+    private storageService: StorageService,
   ) { }
 
-  private getActivitiesRequiringManualApproval(): void {
-    this.adminService.getActivitiesRequiringManualApproval()
+  private getQuests(): void {
+    this.adminService.getQuests()
+      .subscribe(quests => this.quests = quests as Quest[],error => {
+        console.log('error', error)
+      });
+  }
+
+  private getActivitiesRequiringManualApproval(questId: string): void {
+    this.adminService.getActivitiesRequiringManualApproval(questId)
       .subscribe(manualApprovalActivities => this.manualApprovalActivities = manualApprovalActivities as Activity[],error => {
         console.log('error', error)
       });
+  }
+
+  public onQuestClick(questId) {
+    if (this.selectedQuestId !== questId) {
+      this.selectedQuestId = questId;
+      this.storageService.setSelectedQuestId(questId);
+      this.getActivitiesRequiringManualApproval(this.selectedQuestId);
+    } else {
+      this.selectedQuestId = '';
+      this.storageService.setSelectedQuestId('');
+      this.manualApprovalActivities = [];
+    }
   }
 
   public onApproveClick(manualApprovalActivity) {
@@ -30,13 +54,15 @@ export class AdminComponent implements OnInit {
 
     this.adminService.approveActivity(postBody)
       .subscribe(() => {
-        this.getActivitiesRequiringManualApproval();
+        this.getActivitiesRequiringManualApproval(this.selectedQuestId);
       }, error => {
         console.log('error', error);
       });
   }
 
   ngOnInit() {
-    this.getActivitiesRequiringManualApproval();
+    this.getQuests();
+    this.selectedQuestId = this.storageService.getSelectedQuestId();
+    if (this.selectedQuestId) this.getActivitiesRequiringManualApproval(this.selectedQuestId);
   }
 }

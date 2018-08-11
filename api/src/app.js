@@ -324,6 +324,7 @@ app.post('/admin/login', (req, res) => {
 app.get('/admin/activities/requiringManualApproval', (req, res) => {
     isAuthorized(req.header("Email"), req.header("Password")).then(() => {
         const participantActivityQuery = {
+            quest_id: req.query.questId,
             state: ActivityState.ACTIVE,
             completion_type: CompletionType.MANUAL,
         };
