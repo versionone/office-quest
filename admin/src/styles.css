@@ -15,8 +15,10 @@ html, body {
 
 }
 
-h1, h3 {
+h1, h2 {
   color: #fafafa;
+  font-family: 'pcap_terminalbold';
+  letter-spacing: 6px;
 }
 
 .main {
