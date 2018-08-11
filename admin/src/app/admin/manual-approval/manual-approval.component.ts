@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { Activity } from './activity';
-import { AdminService } from './admin.service';
+import { Activity } from '../activity';
+import { AdminService } from '../admin.service';
 import { Quest } from '../quest';
-import { StorageService } from '../storage.service';
+import { StorageService } from '../../storage.service';
 
 @Component({
-  selector: 'app-admin',
-  templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.css']
+  selector: 'app-manual-approval',
+  templateUrl: './manual-approval.component.html',
+  styleUrls: ['./manual-approval.component.css']
 })
-export class AdminComponent implements OnInit {
+export class ManualApprovalComponent implements OnInit {
 
   public quests: Quest[];
   public manualApprovalActivities: Activity[] = [];

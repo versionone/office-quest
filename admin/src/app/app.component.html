@@ -1,10 +1,10 @@
 <div class="container">
-  <div *ngIf="isAuthenticated(); then adminActivityTemplate else loginTemplate"></div>
+  <div *ngIf="isAuthenticated(); then manualApprovalTemplate else loginTemplate"></div>
 </div>
 
-<ng-template #adminActivityTemplate>
-  <nav class="nav">
-    <a routerLink="/admin" class="nav-link">Manual Approval</a>
+<ng-template #manualApprovalTemplate>
+  <nav>
+    <a routerLink="/manualApproval" class="nav-link">Manual Approval</a>
     <a routerLink="/trivia" class="nav-link">Trivia Questions</a>
   </nav>
   <router-outlet></router-outlet>

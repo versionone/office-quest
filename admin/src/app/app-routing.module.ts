@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AdminComponent } from './admin/admin.component';
 import { TriviaComponent } from './admin/trivia/trivia.component';
+import { ManualApprovalComponent } from './admin/manual-approval/manual-approval.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/admin', pathMatch: 'full' },
-  { path: 'admin', component: AdminComponent },
+  { path: 'manualApproval', component: ManualApprovalComponent },
   { path: 'trivia', component: TriviaComponent },
 ];
 
