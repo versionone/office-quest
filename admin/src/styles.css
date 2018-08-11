@@ -16,10 +16,7 @@ html, body {
 }
 
 h1 {
-  font-family: 'pcap_terminalbold';
   color: #fafafa;
-  letter-spacing: 6px;
-  margin-top: 2em;
 }
 
 .main {
@@ -183,6 +180,8 @@ h1 {
 }
 
 .container {
+  margin-top: 80px;
+  font-family: "Lucida Console", Monaco, monospace;
   text-align: center;
 }
 
@@ -328,7 +327,6 @@ li {
 }
 
 .manual-approval-activity {
-  margin: 2em auto;
   padding: 20px;
   margin: 1em;
   border-radius: 35px;
@@ -341,4 +339,20 @@ li {
 
 .manual-approval-activity.selected {
   box-shadow: 0px 0px 22px #44f386;
+}
+
+.nav {
+  width: 100%;
+  background-color: black;
+  position: absolute;
+  top: 0;
+}
+
+.nav-link {
+  text-decoration: none;
+  font-family: "Lucida Console", Monaco, monospace;
+  font-size: 1.3em;
+  color: #fafafa;
+  display: inline-block;
+  padding: 10px;
 }

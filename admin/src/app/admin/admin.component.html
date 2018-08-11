@@ -1,23 +1,25 @@
-<div *ngIf="manualApprovalActivities.length">
-  <h1>Activities Requiring Manual Approval</h1>
-  <div class="manual-approval-container">
-    <div *ngFor="let manualApprovalActivity of manualApprovalActivities"
-        class="manual-approval-activity"
-        [class.selected]="selectedManualApprovalActivityId === manualApprovalActivity._id">
-      <div>
-        <div>{{manualApprovalActivity.participant_name}}</div>
-        <div>{{manualApprovalActivity.participant_email}}</div>
-        <div>{{manualApprovalActivity.email_subject}}</div>
-      </div>
-      <div class="btn-container">
-        <button (click)="onApproveClick(manualApprovalActivity)">Approve</button>
+<div class="container">
+  <div *ngIf="manualApprovalActivities.length">
+    <h1>Activities Requiring Manual Approval</h1>
+    <div class="manual-approval-container">
+      <div *ngFor="let manualApprovalActivity of manualApprovalActivities"
+          class="manual-approval-activity"
+          [class.selected]="selectedManualApprovalActivityId === manualApprovalActivity._id">
+        <div>
+          <div>{{manualApprovalActivity.participant_name}}</div>
+          <div>{{manualApprovalActivity.participant_email}}</div>
+          <div>{{manualApprovalActivity.email_subject}}</div>
+        </div>
+        <div class="btn-container">
+          <button (click)="onApproveClick(manualApprovalActivity)">Approve</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<div *ngIf="!manualApprovalActivities.length">
-  <h1>No Activities Require Manual Approval</h1>
-</div>
-<div class="hackweekLogo">
-  <img src="../assets/images/HackWeek2018.png" />
+  <div *ngIf="!manualApprovalActivities.length">
+    <h1>No Activities Require Manual Approval</h1>
+  </div>
+  <div class="hackweekLogo">
+    <img src="../assets/images/HackWeek2018.png" />
+  </div>
 </div>
