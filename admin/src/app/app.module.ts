@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { AdminComponent } from './admin/admin.component';
 import { LoginComponent } from './login/login.component';
 import { AppRoutingModule } from './/app-routing.module';
-import { TriviaComponent } from './trivia/trivia.component';
+import { TriviaComponent } from './admin/trivia/trivia.component';
 
 @NgModule({
   declarations: [
