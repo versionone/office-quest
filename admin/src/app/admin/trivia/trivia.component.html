@@ -15,9 +15,6 @@
       </div>
     </div>
     <button (click)="onCompleteClick(currentTriviaQuestion)">Complete</button>
-    <div *ngIf="inputIsValid == false" class="error">You must choose one of the options to submit</div>
-    <div *ngIf="answerIsCorrect == false" class="error">Your answer is incorrect, your game is over. Thank you for playing our game</div>
-    <div *ngIf="answerIsCorrect == true" class="success">Your answer is correct! The organizer will have your next question available in a moment</div>
   </div>
 </div>
 <div *ngIf="isTriviaNotStarted">
