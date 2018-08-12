@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Quest } from '../quest';
 import { AdminService } from '../admin.service';
-import { Activity } from '../activity';
+import {Activity, TriviaQuestionState} from '../activity';
 import { StorageService } from '../../storage.service';
 import { ActivityType } from '../../../../../client/src/app/activities/activity';
 
@@ -14,6 +14,7 @@ export class TriviaComponent implements OnInit {
 
   public quests: Quest[];
   public selectedQuestId: string;
+  public isTriviaNotAvailable: boolean;
   public isTriviaNotStarted: boolean;
   public isTriviaComplete: boolean;
   public currentTriviaQuestion: Activity;
@@ -37,37 +38,45 @@ export class TriviaComponent implements OnInit {
       });
   }
 
+  private processTriviaQuestionResponse(triviaQuestionResponse) {
+    const triviaQuestionState = triviaQuestionResponse as TriviaQuestionState;
+    this.currentTriviaQuestion = triviaQuestionState.currentTriviaQuestion;
+    this.isTriviaNotAvailable = triviaQuestionState.isTriviaNotAvailable;
+    this.isTriviaNotStarted = triviaQuestionState.isTriviaNotStarted;
+    this.isTriviaComplete = triviaQuestionState.isTriviaComplete;
+  }
+
   private getCurrentTriviaQuestion(questId) {
     this.adminService.getCurrentTriviaQuestion(questId)
       .subscribe((triviaQuestionResponse) => {
-        console.log('triviaQuestionResponse', triviaQuestionResponse);
-        const activity = triviaQuestionResponse as Activity;
-        if (activity.isTriviaNotStarted) {
-          this.isTriviaNotStarted = activity.isTriviaNotStarted;
-        } else if (activity.isTriviaComplete) {
-          this.isTriviaComplete = activity.isTriviaComplete;
-          this.currentTriviaQuestion = null;
-        } else {
-          this.currentTriviaQuestion = activity;
-          this.isTriviaNotStarted = false;
-        }
+        this.processTriviaQuestionResponse(triviaQuestionResponse);
       },error => {
         console.log('error', error)
       });
   }
-
   public onQuestClick(questId) {
     if (this.selectedQuestId !== questId) {
       this.selectedQuestId = questId;
       this.storageService.setSelectedQuestId(questId);
+      this.getCurrentTriviaQuestion(questId);
     } else {
       this.selectedQuestId = '';
       this.storageService.setSelectedQuestId('');
+      this.currentTriviaQuestion = null;
     }
   }
 
   public onBeginClick(questId) {
+    const postBody = {
+      questId: questId,
+    };
 
+    this.adminService.activateTriviaQuestion(postBody)
+      .subscribe((triviaQuestionResponse) => {
+        this.processTriviaQuestionResponse(triviaQuestionResponse);
+      },error => {
+        console.log('error', error)
+      });
   }
 
   public onCompleteClick(currentTriviaQuestion) {

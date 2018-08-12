@@ -23,11 +23,14 @@
 <div *ngIf="isTriviaNotStarted">
   <h1>Shall we play a game?</h1>
   <div class="begin">
-    <button (click)="onBeginClick()">Totally!</button>
+    <button (click)="onBeginClick(selectedQuestId)">Totally!</button>
   </div>
 </div>
 <div *ngIf="isTriviaComplete">
-  <h1>Game Over</h1>
+  <h1>Game Over!</h1>
+</div>
+<div *ngIf="isTriviaNotAvailable">
+  <h1>This Quest Has No Trivia :(</h1>
 </div>
 <div class="hackweekLogo">
   <img src="../assets/images/HackWeek2018.png" />

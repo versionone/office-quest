@@ -7,8 +7,6 @@ export class Activity {
   message: string;
   choices: any;
   email_subject: string;
-  isTriviaNotStarted: boolean;
-  isTriviaComplete: boolean;
 }
 
 export enum ActivityType {
@@ -18,4 +16,11 @@ export enum ActivityType {
   Hunt = 3,
   Trivia = 99,
   Notification = 100,
+}
+
+export class TriviaQuestionState {
+  isTriviaNotAvailable: boolean;
+  isTriviaNotStarted: boolean;
+  isTriviaComplete: boolean;
+  currentTriviaQuestion: Activity;
 }

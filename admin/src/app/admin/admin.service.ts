@@ -11,7 +11,8 @@ export class AdminService {
   private readonly questsUrl: string;
   private readonly activitiesRequiringManualApprovalUrl: string;
   private readonly approveActivityUrl: string;
-  private readonly currentQuestionUrl: string;
+  private readonly currentTriviaQuestionUrl: string;
+  private readonly activateTriviaQuestionUrl: string;
   private readonly headers: object;
 
   constructor(
@@ -21,7 +22,8 @@ export class AdminService {
     this.questsUrl = this.configService.getApiBaseUrl().concat('quests');
     this.activitiesRequiringManualApprovalUrl = this.configService.getApiBaseUrl().concat('admin/activities/requiringManualApproval');
     this.approveActivityUrl = this.configService.getApiBaseUrl().concat('admin/activity/approve');
-    this.currentQuestionUrl = this.configService.getApiBaseUrl().concat('admin/triviaQuestion/current');
+    this.currentTriviaQuestionUrl = this.configService.getApiBaseUrl().concat('admin/triviaQuestion/current');
+    this.activateTriviaQuestionUrl = this.configService.getApiBaseUrl().concat('admin/triviaQuestion/activate');
     this.headers = this.configService.getApiRequestHeaders();
   }
 
@@ -38,6 +40,10 @@ export class AdminService {
   }
 
   public getCurrentTriviaQuestion(questId: string): Observable<Object> {
-    return this.http.get(this.currentQuestionUrl.concat(`?questId=${questId}`), this.headers);
+    return this.http.get(this.currentTriviaQuestionUrl.concat(`?questId=${questId}`), this.headers);
+  }
+
+  public activateTriviaQuestion(postBody: { questId: string; }) {
+    return this.http.post(this.activateTriviaQuestionUrl, postBody, this.headers)
   }
 }

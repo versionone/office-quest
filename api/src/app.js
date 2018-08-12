@@ -394,22 +394,22 @@ app.get('/admin/triviaQuestion/current', (req, res) => {
     isAuthorized(req.header("Email"), req.header("Password")).then(() => {
         db.collection('quest').findOne({_id: ObjectId(req.query.questId)}, {projection: {activities: 1}}).then(doc => {
             if (doc) {
-                if (!doc.activities) res.json({isTriviaComplete: true});
-
                 const allTriviaQuestions = doc.activities.filter((activity) => {
                    return activity.type === ActivityType.TRIVIA;
                 });
+
+                if (allTriviaQuestions.length == 0) res.json({isTriviaNotAvailable: true});
 
                 const currentTriviaQuestion = allTriviaQuestions.find((triviaQuestion) => {
                     return triviaQuestion.state === ActivityState.ACTIVE;
                 });
 
                 if (currentTriviaQuestion) {
-                    res.json(currentTriviaQuestion);
+                    res.json({currentTriviaQuestion: currentTriviaQuestion});
                 } else {
                     const futureTriviaQuestions = allTriviaQuestions.filter((triviaQuestion) => {
                         // If state had been added to activities array in quest, we could evaluate as
-                        // activity.state === ActivityState.FUTURE
+                        // triviaQuestion.state === ActivityState.FUTURE
                         return !triviaQuestion.state;
                     });
 
@@ -417,8 +417,6 @@ app.get('/admin/triviaQuestion/current', (req, res) => {
                         res.json({isTriviaNotStarted: true});
                     } else {
                         const completedTriviaQuestions = allTriviaQuestions.filter((triviaQuestion) => {
-                            // If state had been added to activities array in quest, we could evaluate as
-                            // activity.state === ActivityState.FUTURE
                             return triviaQuestion.state === ActivityState.COMPLETE;
                         });
 
@@ -429,6 +427,49 @@ app.get('/admin/triviaQuestion/current', (req, res) => {
                 }
             } else {
                 throw new Error(`A quest with _id '${req.query.questId}' was not found`);
+            }
+        }).catch(err => { throw err; });
+    }).catch(() => {
+        res.status(403).send({ isAuthorized: false });
+    });
+});
+
+app.post('/admin/triviaQuestion/activate', (req, res) => {
+    isAuthorized(req.header("Email"), req.header("Password")).then(() => {
+        db.collection('quest').findOne({_id: ObjectId(req.body.questId)}, {projection: {activities: 1}}).then(doc => {
+            if (doc) {
+                const allTriviaQuestions = doc.activities.filter((activity) => {
+                    return activity.type === ActivityType.TRIVIA;
+                });
+
+                if (allTriviaQuestions.length == 0) res.json({isTriviaNotAvailable: true});
+
+                const triviaQuestionToActivate = allTriviaQuestions.find((triviaQuestion) => {
+                    // If state had been added to activities array in quest, we could evaluate as
+                    // triviaQuestion.type === ActivityType.TRIVIA && triviaQuestion.state === ActivityState.FUTURE
+                    return triviaQuestion.type === ActivityType.TRIVIA && !triviaQuestion.state;
+                });
+
+                if (triviaQuestionToActivate) {
+                    const participantActivityUpdateFilter = {
+                        quest_id: req.body.questId,
+                        type: ActivityType.TRIVIA,
+                        state: ActivityState.STAGED,
+                        message: triviaQuestionToActivate.message,
+                    };
+
+                    db.collection('participant_activity').updateMany(participantActivityUpdateFilter, {$set: {state: ActivityState.ACTIVE}}).then(() => {
+                        const triviaQuestionToActivateIndex = doc.activities.indexOf(triviaQuestionToActivate);
+                        const setObject = {$set: {[`activities.${triviaQuestionToActivateIndex}.state`]: 64}};
+                        db.collection('quest').updateOne({_id : ObjectId(req.body.questId)}, setObject).then(() => {
+                            res.json({currentTriviaQuestion: triviaQuestionToActivate});
+                        }).catch(err => { throw err; });
+                    }).catch(err => { throw err; });
+                } else {
+                    res.json({isTriviaComplete: true});
+                }
+            } else {
+                throw new Error(`A quest with _id '${req.body.questId}' was not found`);
             }
         }).catch(err => { throw err; });
     }).catch(() => {
