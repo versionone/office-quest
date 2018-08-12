@@ -438,13 +438,7 @@ app.post('/admin/triviaQuestion/activate', (req, res) => {
     isAuthorized(req.header("Email"), req.header("Password")).then(() => {
         db.collection('quest').findOne({_id: ObjectId(req.body.questId)}, {projection: {activities: 1}}).then(doc => {
             if (doc) {
-                const allTriviaQuestions = doc.activities.filter((activity) => {
-                    return activity.type === ActivityType.TRIVIA;
-                });
-
-                if (allTriviaQuestions.length == 0) res.json({isTriviaNotAvailable: true});
-
-                const triviaQuestionToActivate = allTriviaQuestions.find((triviaQuestion) => {
+                const triviaQuestionToActivate = doc.activities.find((triviaQuestion) => {
                     // If state had been added to activities array in quest, we could evaluate as
                     // triviaQuestion.type === ActivityType.TRIVIA && triviaQuestion.state === ActivityState.FUTURE
                     return triviaQuestion.type === ActivityType.TRIVIA && !triviaQuestion.state;
@@ -462,11 +456,11 @@ app.post('/admin/triviaQuestion/activate', (req, res) => {
                         const triviaQuestionToActivateIndex = doc.activities.indexOf(triviaQuestionToActivate);
                         const setObject = {$set: {[`activities.${triviaQuestionToActivateIndex}.state`]: 64}};
                         db.collection('quest').updateOne({_id : ObjectId(req.body.questId)}, setObject).then(() => {
-                            res.json({currentTriviaQuestion: triviaQuestionToActivate});
+                            res.json({});
                         }).catch(err => { throw err; });
                     }).catch(err => { throw err; });
                 } else {
-                    res.json({isTriviaComplete: true});
+                    res.json({});
                 }
             } else {
                 throw new Error(`A quest with _id '${req.body.questId}' was not found`);

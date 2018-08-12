@@ -38,22 +38,19 @@ export class TriviaComponent implements OnInit {
       });
   }
 
-  private processTriviaQuestionResponse(triviaQuestionResponse) {
-    const triviaQuestionState = triviaQuestionResponse as TriviaQuestionState;
-    this.currentTriviaQuestion = triviaQuestionState.currentTriviaQuestion;
-    this.isTriviaNotAvailable = triviaQuestionState.isTriviaNotAvailable;
-    this.isTriviaNotStarted = triviaQuestionState.isTriviaNotStarted;
-    this.isTriviaComplete = triviaQuestionState.isTriviaComplete;
-  }
-
   private getCurrentTriviaQuestion(questId) {
     this.adminService.getCurrentTriviaQuestion(questId)
       .subscribe((triviaQuestionResponse) => {
-        this.processTriviaQuestionResponse(triviaQuestionResponse);
+        const triviaQuestionState = triviaQuestionResponse as TriviaQuestionState;
+        this.currentTriviaQuestion = triviaQuestionState.currentTriviaQuestion;
+        this.isTriviaNotAvailable = triviaQuestionState.isTriviaNotAvailable;
+        this.isTriviaNotStarted = triviaQuestionState.isTriviaNotStarted;
+        this.isTriviaComplete = triviaQuestionState.isTriviaComplete;
       },error => {
         console.log('error', error)
       });
   }
+
   public onQuestClick(questId) {
     if (this.selectedQuestId !== questId) {
       this.selectedQuestId = questId;
@@ -72,8 +69,8 @@ export class TriviaComponent implements OnInit {
     };
 
     this.adminService.activateTriviaQuestion(postBody)
-      .subscribe((triviaQuestionResponse) => {
-        this.processTriviaQuestionResponse(triviaQuestionResponse);
+      .subscribe(() => {
+        this.getCurrentTriviaQuestion(questId);
       },error => {
         console.log('error', error)
       });
