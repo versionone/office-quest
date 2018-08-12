@@ -16,6 +16,15 @@ const ActivityState = {
     COMPLETE: 128,
 };
 
+const ActivityType = {
+    GUI: 0,
+    ONLINE: 1,
+    SCRAMBLE: 2,
+    HUNT: 3,
+    TRIVIA: 99,
+    NOTIFICATION: 100,
+};
+
 const CompletionType = {
     ANSWER: 0,
     MANUAL: 1,
@@ -374,6 +383,52 @@ app.post('/admin/activity/approve', (req, res) => {
                 }).catch(err => { throw err; });
             } else {
                 throw new Error(`A participantActivity with _id '${req.body.participantActivityId}' was not found`);
+            }
+        }).catch(err => { throw err; });
+    }).catch(() => {
+        res.status(403).send({ isAuthorized: false });
+    });
+});
+
+app.get('/admin/triviaQuestion/current', (req, res) => {
+    isAuthorized(req.header("Email"), req.header("Password")).then(() => {
+        db.collection('quest').findOne({_id: ObjectId(req.query.questId)}, {projection: {activities: 1}}).then(doc => {
+            if (doc) {
+                if (!doc.activities) res.json({isTriviaComplete: true});
+
+                const allTriviaQuestions = doc.activities.filter((activity) => {
+                   return activity.type === ActivityType.TRIVIA;
+                });
+
+                const currentTriviaQuestion = allTriviaQuestions.find((triviaQuestion) => {
+                    return triviaQuestion.state === ActivityState.ACTIVE;
+                });
+
+                if (currentTriviaQuestion) {
+                    res.json(currentTriviaQuestion);
+                } else {
+                    const futureTriviaQuestions = allTriviaQuestions.filter((triviaQuestion) => {
+                        // If state had been added to activities array in quest, we could evaluate as
+                        // activity.state === ActivityState.FUTURE
+                        return !triviaQuestion.state;
+                    });
+
+                    if (futureTriviaQuestions.length === allTriviaQuestions.length) {
+                        res.json({isTriviaNotStarted: true});
+                    } else {
+                        const completedTriviaQuestions = allTriviaQuestions.filter((triviaQuestion) => {
+                            // If state had been added to activities array in quest, we could evaluate as
+                            // activity.state === ActivityState.FUTURE
+                            return triviaQuestion.state === ActivityState.COMPLETE;
+                        });
+
+                        if (completedTriviaQuestions.length === allTriviaQuestions.length) {
+                            res.json({isTriviaComplete: true});
+                        }
+                    }
+                }
+            } else {
+                throw new Error(`A quest with _id '${req.query.questId}' was not found`);
             }
         }).catch(err => { throw err; });
     }).catch(() => {

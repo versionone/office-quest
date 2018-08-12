@@ -5,3 +5,30 @@
     </ul>
   </div>
 </div>
+<div *ngIf="currentTriviaQuestion" class="main">
+  <div class="component">
+    <div class="quest-image"><img src="assets/images/quest-trivia.png" /></div>
+    <div class="activity-message" [innerHtml]="currentTriviaQuestion.message | safeHtml"></div>
+    <div class="choice-container">
+      <div *ngFor="let choice of currentTriviaQuestion.choices" [class.selected]="answer === choice.option" class="choice">
+        {{choice.option}}: {{choice.value}}
+      </div>
+    </div>
+    <button (click)="onCompleteClick(currentTriviaQuestion)">Complete</button>
+    <div *ngIf="inputIsValid == false" class="error">You must choose one of the options to submit</div>
+    <div *ngIf="answerIsCorrect == false" class="error">Your answer is incorrect, your game is over. Thank you for playing our game</div>
+    <div *ngIf="answerIsCorrect == true" class="success">Your answer is correct! The organizer will have your next question available in a moment</div>
+  </div>
+</div>
+<div *ngIf="isTriviaNotStarted">
+  <h1>Shall we play a game?</h1>
+  <div class="begin">
+    <button (click)="onBeginClick()">Totally!</button>
+  </div>
+</div>
+<div *ngIf="isTriviaComplete">
+  <h1>Game Over</h1>
+</div>
+<div class="hackweekLogo">
+  <img src="../assets/images/HackWeek2018.png" />
+</div>

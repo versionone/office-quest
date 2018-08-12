@@ -389,3 +389,26 @@ li {
   display: inline-block;
   padding: 10px;
 }
+
+.begin {
+  margin-top: 40px;
+}
+
+.begin button {
+  cursor: pointer;
+  outline: 0;
+  font-family: "Lucida Console", Monaco, monospace;
+  font-size: 32px;
+  border-radius: 45px;
+  padding: .5em 2em;
+  color: #fff;
+  border: 0;
+  text-align: center !important;
+  margin: 0 auto;
+  display: block;
+  background: #4500d1; /* Old browsers */
+  background: -moz-linear-gradient(-45deg, #4500d1 0%, #f60efe 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(-45deg, #4500d1 0%,#f60efe 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(135deg, #4500d1 0%,#f60efe 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4500d1', endColorstr='#f60efe',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+}

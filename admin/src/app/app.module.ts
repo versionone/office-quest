@@ -7,13 +7,15 @@ import { LoginComponent } from './login/login.component';
 import { AppRoutingModule } from './app-routing.module';
 import { TriviaComponent } from './admin/trivia/trivia.component';
 import { ManualApprovalComponent } from './admin/manual-approval/manual-approval.component';
+import { SafeHtmlPipe } from './admin/safe-html.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     TriviaComponent,
-    ManualApprovalComponent
+    ManualApprovalComponent,
+    SafeHtmlPipe,
   ],
   imports: [
     BrowserModule,
