@@ -3,6 +3,7 @@ export class Activity {
   participant_id: string;
   participant_name: string;
   participant_email: string;
+  state: number;
   start_datetime: Date;
   message: string;
   choices: any;
@@ -17,6 +18,14 @@ export enum ActivityType {
   Trivia = 99,
   Notification = 100,
 }
+
+export const ActivityState = {
+  FUTURE: 0,
+  STAGED: 32,
+  NOTIFYING: 48,
+  ACTIVE: 64,
+  COMPLETE: 128,
+};
 
 export class TriviaQuestionState {
   isTriviaNotAvailable: boolean;

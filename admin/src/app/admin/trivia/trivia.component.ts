@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Quest } from '../quest';
 import { AdminService } from '../admin.service';
-import {Activity, TriviaQuestionState} from '../activity';
+import {
+  Activity,
+  ActivityType,
+  ActivityState,
+  TriviaQuestionState,
+} from '../activity';
 import { StorageService } from '../../storage.service';
-import { ActivityType } from '../../../../../client/src/app/activities/activity';
 
 @Component({
   selector: 'app-trivia',
@@ -20,6 +24,8 @@ export class TriviaComponent implements OnInit {
   public currentTriviaQuestion: Activity;
   public type: number;
   public activityType;
+  public state: number;
+  public activityState;
   public answer: string;
   public inputIsValid?: boolean = null;
   public answerIsCorrect?: boolean = null;
@@ -29,6 +35,7 @@ export class TriviaComponent implements OnInit {
     private storageService: StorageService,
   ) {
     this.activityType = ActivityType;
+    this.activityState = ActivityState;
   }
 
   private getQuests(): void {
@@ -43,6 +50,7 @@ export class TriviaComponent implements OnInit {
       .subscribe((triviaQuestionResponse) => {
         const triviaQuestionState = triviaQuestionResponse as TriviaQuestionState;
         this.currentTriviaQuestion = triviaQuestionState.currentTriviaQuestion;
+        if (this.currentTriviaQuestion) this.state = this.currentTriviaQuestion.state;
         this.isTriviaNotAvailable = triviaQuestionState.isTriviaNotAvailable;
         this.isTriviaNotStarted = triviaQuestionState.isTriviaNotStarted;
         this.isTriviaComplete = triviaQuestionState.isTriviaComplete;
@@ -63,7 +71,10 @@ export class TriviaComponent implements OnInit {
     }
   }
 
-  public onBeginClick(questId) {
+  public onActivateClick(questId) {
+    this.answer = '';
+    this.state = this.activityState.COMPLETE;
+
     const postBody = {
       questId: questId,
     };
@@ -77,7 +88,18 @@ export class TriviaComponent implements OnInit {
   }
 
   public onCompleteClick(currentTriviaQuestion) {
+    const postBody = {
+      questId: this.selectedQuestId,
+      message: currentTriviaQuestion.message,
+    };
 
+    this.adminService.completeTriviaQuestion(postBody)
+      .subscribe(() => {
+        this.answer = currentTriviaQuestion.answer;
+        this.state = this.activityState.COMPLETE;
+      },error => {
+        console.log('error', error)
+      });
   }
 
   ngOnInit() {

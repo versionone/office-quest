@@ -454,7 +454,44 @@ app.post('/admin/triviaQuestion/activate', (req, res) => {
 
                     db.collection('participant_activity').updateMany(participantActivityUpdateFilter, {$set: {state: ActivityState.ACTIVE}}).then(() => {
                         const triviaQuestionToActivateIndex = doc.activities.indexOf(triviaQuestionToActivate);
-                        const setObject = {$set: {[`activities.${triviaQuestionToActivateIndex}.state`]: 64}};
+                        const setObject = {$set: {[`activities.${triviaQuestionToActivateIndex}.state`]: ActivityState.ACTIVE}};
+                        db.collection('quest').updateOne({_id : ObjectId(req.body.questId)}, setObject).then(() => {
+                            res.json({});
+                        }).catch(err => { throw err; });
+                    }).catch(err => { throw err; });
+                } else {
+                    res.json({});
+                }
+            } else {
+                throw new Error(`A quest with _id '${req.body.questId}' was not found`);
+            }
+        }).catch(err => { throw err; });
+    }).catch(() => {
+        res.status(403).send({ isAuthorized: false });
+    });
+});
+
+app.post('/admin/triviaQuestion/complete', (req, res) => {
+    isAuthorized(req.header("Email"), req.header("Password")).then(() => {
+        db.collection('quest').findOne({_id: ObjectId(req.body.questId)}, {projection: {activities: 1}}).then(doc => {
+            if (doc) {
+                const triviaQuestionToComplete = doc.activities.find((triviaQuestion) => {
+                    return triviaQuestion.type === ActivityType.TRIVIA
+                        && triviaQuestion.state === ActivityState.ACTIVE
+                        && triviaQuestion.message === req.body.message;
+                });
+
+                if (triviaQuestionToComplete) {
+                    const participantActivityUpdateFilter = {
+                        quest_id: req.body.questId,
+                        type: ActivityType.TRIVIA,
+                        state: ActivityState.ACTIVE,
+                        message: triviaQuestionToComplete.message,
+                    };
+
+                    db.collection('participant_activity').updateMany(participantActivityUpdateFilter, {$set: {state: ActivityState.COMPLETE}}).then(() => {
+                        const triviaQuestionToCompleteIndex = doc.activities.indexOf(triviaQuestionToComplete);
+                        const setObject = {$set: {[`activities.${triviaQuestionToCompleteIndex}.state`]: ActivityState.COMPLETE}};
                         db.collection('quest').updateOne({_id : ObjectId(req.body.questId)}, setObject).then(() => {
                             res.json({});
                         }).catch(err => { throw err; });

@@ -14,13 +14,14 @@
         {{choice.option}}: {{choice.value}}
       </div>
     </div>
-    <button (click)="onCompleteClick(currentTriviaQuestion)">Complete</button>
+    <button *ngIf="state===activityState.ACTIVE" (click)="onCompleteClick(currentTriviaQuestion)">Complete</button>
+    <button *ngIf="state===activityState.COMPLETE" (click)="onActivateClick(selectedQuestId)">Next</button>
   </div>
 </div>
 <div *ngIf="isTriviaNotStarted">
   <h1>Shall we play a game?</h1>
   <div class="begin">
-    <button (click)="onBeginClick(selectedQuestId)">Totally!</button>
+    <button (click)="onActivateClick(selectedQuestId)">Totally!</button>
   </div>
 </div>
 <div *ngIf="isTriviaComplete">

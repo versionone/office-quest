@@ -13,6 +13,7 @@ export class AdminService {
   private readonly approveActivityUrl: string;
   private readonly currentTriviaQuestionUrl: string;
   private readonly activateTriviaQuestionUrl: string;
+  private readonly completeTriviaQuestionUrl: string;
   private readonly headers: object;
 
   constructor(
@@ -24,6 +25,7 @@ export class AdminService {
     this.approveActivityUrl = this.configService.getApiBaseUrl().concat('admin/activity/approve');
     this.currentTriviaQuestionUrl = this.configService.getApiBaseUrl().concat('admin/triviaQuestion/current');
     this.activateTriviaQuestionUrl = this.configService.getApiBaseUrl().concat('admin/triviaQuestion/activate');
+    this.completeTriviaQuestionUrl = this.configService.getApiBaseUrl().concat('admin/triviaQuestion/complete');
     this.headers = this.configService.getApiRequestHeaders();
   }
 
@@ -45,5 +47,9 @@ export class AdminService {
 
   public activateTriviaQuestion(postBody: { questId: string; }) {
     return this.http.post(this.activateTriviaQuestionUrl, postBody, this.headers)
+  }
+
+  public completeTriviaQuestion(postBody: { questId: string; message: string }) {
+    return this.http.post(this.completeTriviaQuestionUrl, postBody, this.headers)
   }
 }
